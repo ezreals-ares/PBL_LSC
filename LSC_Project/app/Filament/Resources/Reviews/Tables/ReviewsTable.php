@@ -14,11 +14,13 @@ class ReviewsTable
     {
         return $table
             ->columns([
-                TextColumn::make('user_id')
-                    ->numeric()
-                    ->sortable(),
+                TextColumn::make('user.name')
+                    ->label('Nama')
+                    ->sortable()
+                    ->searchable(),
                 TextColumn::make('order_id')
                     ->numeric()
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable(),
                 TextColumn::make('rating')
                     ->numeric()
