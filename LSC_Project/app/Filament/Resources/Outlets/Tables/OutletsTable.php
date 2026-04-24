@@ -14,6 +14,10 @@ class OutletsTable
     {
         return $table
             ->columns([
+                TextColumn::make('outlet_id')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->numeric()
+                    ->sortable(),
                 TextColumn::make('outlet_name')
                     ->searchable(),
                 TextColumn::make('google_maps_link')

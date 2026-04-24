@@ -7,6 +7,7 @@ use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Filament\Actions\deleteAction;
 
 class ServicesTable
 {
@@ -17,7 +18,7 @@ class ServicesTable
                 TextColumn::make('service_name')
                     ->searchable(),
                 TextColumn::make('price')
-                    ->money()
+                    ->money('IDR')
                     ->sortable(),
                 TextColumn::make('estimated_days')
                     ->numeric()
@@ -38,6 +39,7 @@ class ServicesTable
             ])
             ->recordActions([
                 EditAction::make(),
+                
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

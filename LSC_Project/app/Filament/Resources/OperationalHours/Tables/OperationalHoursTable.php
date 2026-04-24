@@ -7,6 +7,7 @@ use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Filament\Actions\deleteAction;
 
 class OperationalHoursTable
 {
@@ -16,6 +17,7 @@ class OperationalHoursTable
             ->columns([
                 TextColumn::make('outlet_id')
                     ->numeric()
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable(),
                 TextColumn::make('day')
                     ->searchable(),
