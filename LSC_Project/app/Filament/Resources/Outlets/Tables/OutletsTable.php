@@ -1,33 +1,29 @@
 <?php
 
-namespace App\Filament\Admin\Resources\Payments\Tables;
+namespace App\Filament\Admin\Resources\Outlets\Tables;
 
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Actions\DeleteAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
-class PaymentsTable
+class OutletsTable
 {
     public static function configure(Table $table): Table
     {
         return $table
             ->columns([
-                TextColumn::make('order_id')
+                TextColumn::make('outlet_id')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->numeric()
                     ->sortable(),
-                TextColumn::make('payment_date')
-                    ->date()
-                    ->sortable(),
-                TextColumn::make('amount')
-                    ->numeric()
-                    ->sortable(),
-                TextColumn::make('payment_method')
+                TextColumn::make('outlet_name')
                     ->searchable(),
-                TextColumn::make('status')
+                TextColumn::make('google_maps_link')
                     ->searchable(),
-                TextColumn::make('payment_proof')
+                TextColumn::make('phone')
                     ->searchable(),
                 TextColumn::make('created_at')
                     ->dateTime()
@@ -43,6 +39,7 @@ class PaymentsTable
             ])
             ->recordActions([
                 EditAction::make(),
+                DeleteAction::make(),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

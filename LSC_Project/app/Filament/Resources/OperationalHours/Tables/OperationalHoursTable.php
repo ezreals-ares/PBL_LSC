@@ -1,29 +1,32 @@
 <?php
 
-namespace App\Filament\Admin\Resources\Services\Tables;
+namespace App\Filament\Admin\Resources\OperationalHours\Tables;
 
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Actions\DeleteAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
-class ServicesTable
+class OperationalHoursTable
 {
     public static function configure(Table $table): Table
     {
         return $table
             ->columns([
-                TextColumn::make('service_name')
-                    ->searchable(),
-                TextColumn::make('price')
-                    ->money('IDR')
-                    ->sortable(),
-                TextColumn::make('estimated_days')
+                TextColumn::make('outlet_id')
                     ->numeric()
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable(),
-                TextColumn::make('gambar')
+                TextColumn::make('day')
                     ->searchable(),
+                TextColumn::make('open_time')
+                    ->time()
+                    ->sortable(),
+                TextColumn::make('close_time')
+                    ->time()
+                    ->sortable(),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -38,7 +41,7 @@ class ServicesTable
             ])
             ->recordActions([
                 EditAction::make(),
-
+                DeleteAction::make(),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

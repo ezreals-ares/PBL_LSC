@@ -10,6 +10,10 @@ use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Actions\DeleteAction;
 
 class OrdersTable
 {
@@ -48,6 +52,7 @@ class OrdersTable
                     ->sortable(),
             ])
             ->filters([
+                
                 Filter::make('order_date')
                     ->form([
                         DatePicker::make('created_from')->label('Dari Tanggal'),
@@ -65,6 +70,16 @@ class OrdersTable
                             );
                     })
                     ->columnSpan(1),
+
+                
+                SelectFilter::make('service_id')
+                    ->label('Kategori Layanan')
+                    ->relationship('orderDetails.service', 'service_name')
+                    ->searchable()
+                    ->preload()
+                    ->columnSpan(1),
+
+                
                 SelectFilter::make('pickup_method')
                     ->label('Metode Pengiriman')
                     ->options([
@@ -81,7 +96,14 @@ class OrdersTable
                     ->color('primary'),
             ])
             ->recordActions([
+                EditAction::make(),
+                DeleteAction::make(),
 
+            ])
+            ->toolbarActions([
+                bulkActionGroup::make([
+                    DeleteBulkAction::make(),
+                ]),
             ]);
     }
 }

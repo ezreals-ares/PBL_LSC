@@ -1,31 +1,31 @@
 <?php
 
-namespace App\Filament\Admin\Resources\Reviews\Tables;
+namespace App\Filament\Admin\Resources\Users\Tables;
 
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Actions\DeleteAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
-class ReviewsTable
+class UsersTable
 {
     public static function configure(Table $table): Table
     {
         return $table
             ->columns([
-                TextColumn::make('user.name')
-                    ->label('Nama')
-                    ->sortable()
+                TextColumn::make('name')
                     ->searchable(),
-                TextColumn::make('order_id')
-                    ->numeric()
-                    ->toggleable(isToggledHiddenByDefault: true)
+                TextColumn::make('email')
+                    ->label('Email address')
+                    ->searchable(),
+                TextColumn::make('email_verified_at')
+                    ->dateTime()
                     ->sortable(),
-                TextColumn::make('rating')
-                    ->numeric()
-                    ->sortable(),
-                TextColumn::make('photo')
+                TextColumn::make('phone')
+                    ->searchable(),
+                TextColumn::make('role')
                     ->searchable(),
                 TextColumn::make('created_at')
                     ->dateTime()
@@ -41,6 +41,7 @@ class ReviewsTable
             ])
             ->recordActions([
                 EditAction::make(),
+                DeleteAction::make(),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
