@@ -18,7 +18,7 @@ class OutletResource extends Resource
 {
     protected static ?string $model = Outlet::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBuildingStorefront;
 
     public static function form(Schema $schema): Schema
     {
