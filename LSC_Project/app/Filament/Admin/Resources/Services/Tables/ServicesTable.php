@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Admin\Resources\Users\Tables;
+namespace App\Filament\Admin\Resources\Services\Tables;
 
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
@@ -8,23 +8,21 @@ use Filament\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
-class UsersTable
+class ServicesTable
 {
     public static function configure(Table $table): Table
     {
         return $table
             ->columns([
-                TextColumn::make('name')
+                TextColumn::make('service_name')
                     ->searchable(),
-                TextColumn::make('email')
-                    ->label('Email address')
-                    ->searchable(),
-                TextColumn::make('email_verified_at')
-                    ->dateTime()
+                TextColumn::make('price')
+                    ->money('IDR')
                     ->sortable(),
-                TextColumn::make('phone')
-                    ->searchable(),
-                TextColumn::make('role')
+                TextColumn::make('estimated_days')
+                    ->numeric()
+                    ->sortable(),
+                TextColumn::make('gambar')
                     ->searchable(),
                 TextColumn::make('created_at')
                     ->dateTime()
@@ -40,6 +38,7 @@ class UsersTable
             ])
             ->recordActions([
                 EditAction::make(),
+
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

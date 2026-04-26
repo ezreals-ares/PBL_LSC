@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Admin\Resources\Users\Tables;
+namespace App\Filament\Admin\Resources\Outlets\Tables;
 
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
@@ -8,23 +8,21 @@ use Filament\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
-class UsersTable
+class OutletsTable
 {
     public static function configure(Table $table): Table
     {
         return $table
             ->columns([
-                TextColumn::make('name')
-                    ->searchable(),
-                TextColumn::make('email')
-                    ->label('Email address')
-                    ->searchable(),
-                TextColumn::make('email_verified_at')
-                    ->dateTime()
+                TextColumn::make('outlet_id')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->numeric()
                     ->sortable(),
-                TextColumn::make('phone')
+                TextColumn::make('outlet_name')
                     ->searchable(),
-                TextColumn::make('role')
+                TextColumn::make('google_maps_link')
+                    ->searchable(),
+                TextColumn::make('phone')
                     ->searchable(),
                 TextColumn::make('created_at')
                     ->dateTime()
