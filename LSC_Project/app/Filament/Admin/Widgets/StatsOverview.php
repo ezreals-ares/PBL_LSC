@@ -20,7 +20,8 @@ class StatsOverview extends BaseWidget
         $pelangganBaru     = User::where('role', 'customer')
                                 ->where('created_at', '>=', Carbon::now()->startOfMonth())
                                 ->count();
-        $totalPendapatan   = Payment::where('status', 'verified')->sum('amount');
+        $statusDihitung = ['diproses', 'selesai'];
+        $totalPendapatan = Order::whereIn('status', $statusDihitung)->sum('total_price');
 
         // Trend pesanan: bandingkan bulan ini vs bulan lalu
         $pesananBulanIni   = Order::whereMonth('order_date', Carbon::now()->month)->count();
@@ -54,7 +55,7 @@ class StatsOverview extends BaseWidget
                 ->color('success'),
 
             Stat::make('Total Pendapatan', 'Rp ' . number_format($totalPendapatan, 0, ',', '.'))
-                ->description('Dari payment verified')
+                ->description('Dari order')
                 ->descriptionIcon('heroicon-m-banknotes')
                 ->color('info'),
         ];
