@@ -24,9 +24,11 @@ class ServiceForm
                 TextInput::make('estimated_days')
                     ->required()
                     ->numeric(),
-                FileUpload::make('photo')
+                FileUpload::make('gambar')
+                    ->image()
                     ->disk('public')
-                    ->directory('service-photos'),
+                    ->fetchFileInformation(false)
+                    ->directory('service_photos'),
             ]);
     }
 }

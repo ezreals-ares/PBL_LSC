@@ -28,11 +28,12 @@ class PaymentForm
                     'bank-transfer' => 'Bank Transfer',
                 ])
                 ->default('e-wallet')->required(),
-
+                
             FileUpload::make('payment_proof')
                 ->image()
-                ->directory('payment-proofs')
-                ->required(),
+                ->disk('public')
+                ->fetchFileInformation(false)
+                ->directory('payment_proof'),
 
             Select::make('status')
                 ->options([

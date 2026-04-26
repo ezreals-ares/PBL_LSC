@@ -31,7 +31,8 @@ class ReviewsTable
                 TextColumn::make('comment')
                     ->limit(50)
                     ->wrap(),
-                ImageColumn::make('image'),
+                ImageColumn::make('photo')
+                    ->disk('public'),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

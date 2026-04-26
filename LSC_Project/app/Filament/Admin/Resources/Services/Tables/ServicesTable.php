@@ -25,9 +25,9 @@ class ServicesTable
                     ->numeric()
                     ->sortable(),
                 TextColumn::make('description')
-                    ->limit(50)
+                    ->limit(20)
                     ->wrap(),
-                ImageColumn::make('photo')
+                ImageColumn::make('gambar')
                     ->disk('public'),
                 TextColumn::make('created_at')
                     ->dateTime()

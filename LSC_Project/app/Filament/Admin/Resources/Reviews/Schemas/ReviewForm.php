@@ -24,9 +24,11 @@ class ReviewForm
                     ->numeric(),
                 Textarea::make('comment')
                     ->columnSpanFull(),
-                FileUpload::make('image')
-                ->image()
-                ->directory('review-images'),
+                FileUpload::make('photo')
+                    ->disk('public')
+                    ->fetchFileInformation(false)
+                    ->image()
+                    ->directory('review-images'),
             ]);
     }
 }
