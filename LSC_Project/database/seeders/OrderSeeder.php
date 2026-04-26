@@ -226,7 +226,7 @@ class OrderSeeder extends Seeder
 
             // Buat order
             $order = Order::create([
-                'user_id'          => $customer->user_id,
+                'user_id'          => $customer->id,
                 'order_date'       => $orderData['order_date'],
                 'jenis_sepatu'     => $orderData['jenis_sepatu'],
                 'pickup_method'    => $orderData['pickup_method'],

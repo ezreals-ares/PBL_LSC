@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('reviews', function (Blueprint $table) {
             $table->id('review_id');
             $table->foreignId('user_id')
-                ->constrained('users', 'user_id') 
+                ->constrained() 
                 ->cascadeOnDelete();
             $table->foreignId('order_id')
                 ->constrained('orders', 'order_id')

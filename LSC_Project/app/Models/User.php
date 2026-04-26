@@ -14,9 +14,6 @@ class User extends Authenticatable implements FilamentUser
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
-
-    protected $primaryKey = 'user_id';
-
     /**
      * The attributes that are mass assignable.
      *
