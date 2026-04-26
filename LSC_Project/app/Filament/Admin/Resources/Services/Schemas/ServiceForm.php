@@ -5,6 +5,7 @@ namespace App\Filament\Admin\Resources\Services\Schemas;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
+use Filament\Forms\Components\FileUpload;
 
 class ServiceForm
 {
@@ -23,7 +24,9 @@ class ServiceForm
                 TextInput::make('estimated_days')
                     ->required()
                     ->numeric(),
-                TextInput::make('gambar'),
+                FileUpload::make('photo')
+                    ->disk('public')
+                    ->directory('service-photos'),
             ]);
     }
 }

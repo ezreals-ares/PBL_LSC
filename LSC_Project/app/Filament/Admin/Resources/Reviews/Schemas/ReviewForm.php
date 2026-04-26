@@ -24,9 +24,9 @@ class ReviewForm
                     ->numeric(),
                 Textarea::make('comment')
                     ->columnSpanFull(),
-                FileUpload::make('payment_proof')
+                FileUpload::make('image')
                 ->image()
-                ->directory('payment-proofs'),
+                ->directory('review-images'),
             ]);
     }
 }

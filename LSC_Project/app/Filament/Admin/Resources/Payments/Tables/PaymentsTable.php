@@ -36,8 +36,7 @@ class PaymentsTable
                             default => 'gray',
                         })
                     ->searchable(),
-                ImageColumn::make('payment_proof')
-                ->visibility('public'),
+                ImageColumn::make('payment-proofs'),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

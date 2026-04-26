@@ -9,6 +9,7 @@ use Filament\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Filament\Tables\Columns\ImageColumn;
+use Filament\Tables\Columns\BadgeColumn;
 
 class ReviewsTable
 {
@@ -27,8 +28,10 @@ class ReviewsTable
                 TextColumn::make('rating')
                     ->numeric()
                     ->sortable(),
-                ImageColumn::make('photo')
-                ->visibility('public'),
+                TextColumn::make('comment')
+                    ->limit(50)
+                    ->wrap(),
+                ImageColumn::make('image'),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

@@ -8,6 +8,7 @@ use Filament\Actions\EditAction;
 use Filament\Actions\DeleteAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Filament\Tables\Columns\ImageColumn;
 
 class ServicesTable
 {
@@ -23,8 +24,11 @@ class ServicesTable
                 TextColumn::make('estimated_days')
                     ->numeric()
                     ->sortable(),
-                TextColumn::make('gambar')
-                    ->searchable(),
+                TextColumn::make('description')
+                    ->limit(50)
+                    ->wrap(),
+                ImageColumn::make('photo')
+                    ->disk('public'),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
