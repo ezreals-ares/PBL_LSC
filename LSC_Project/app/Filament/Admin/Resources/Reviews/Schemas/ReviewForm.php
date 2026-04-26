@@ -5,6 +5,7 @@ namespace App\Filament\Admin\Resources\Reviews\Schemas;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
+use Filament\Forms\Components\FileUpload;
 
 class ReviewForm
 {
@@ -23,7 +24,9 @@ class ReviewForm
                     ->numeric(),
                 Textarea::make('comment')
                     ->columnSpanFull(),
-                TextInput::make('photo'),
+                FileUpload::make('payment_proof')
+                ->image()
+                ->directory('payment-proofs'),
             ]);
     }
 }

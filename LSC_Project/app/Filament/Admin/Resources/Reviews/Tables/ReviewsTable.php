@@ -8,6 +8,7 @@ use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Filament\Tables\Columns\ImageColumn;
 
 class ReviewsTable
 {
@@ -26,8 +27,8 @@ class ReviewsTable
                 TextColumn::make('rating')
                     ->numeric()
                     ->sortable(),
-                TextColumn::make('photo')
-                    ->searchable(),
+                ImageColumn::make('photo')
+                ->visibility('public'),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

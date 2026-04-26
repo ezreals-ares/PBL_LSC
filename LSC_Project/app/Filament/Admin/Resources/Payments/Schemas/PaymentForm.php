@@ -31,7 +31,10 @@ class PaymentForm
 
             FileUpload::make('payment_proof')
                 ->image()
-                ->directory('payment-proofs'),
+                ->disk('public') 
+                ->directory('payment-proofs')
+                ->required()
+                ->visibility('public'),
 
             Select::make('status')
                 ->options([

@@ -28,7 +28,7 @@ class OrdersTable
                 TextColumn::make('user.name')
                     ->label('Customer')
                     ->searchable(),
-                TextColumn::make('shoe_type')
+                TextColumn::make('jenis_sepatu')
                     ->label('Jenis Sepatu')
                     ->searchable(),
                 TextColumn::make('order_date')
