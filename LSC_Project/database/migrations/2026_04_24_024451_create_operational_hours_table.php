@@ -12,20 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('operational_hours', function (Blueprint $table) {
-            $table->id();
-            $table
-                ->foreignId('outlet_id')
-                ->constrained('outlets')
-                ->cascadeOnDelete();
-            $table->enum('day', [
-                'Sunday',
-                'Monday',
-                'Tuesday',
-                'Wednesday',
-                'Thursday',
-                'Friday',
-                'Saturday',
-            ]);
+            $table->id('operational_id');
+            $table->foreignId('outlet_id')->constrained('outlets', 'outlet_id')->cascadeOnDelete();
+            $table->enum('day', ['Senin','Selasa','Rabu','Kamis','Jumat','Sabtu','Minggu']);
             $table->time('open_time');
             $table->time('close_time');
             $table->timestamps();
