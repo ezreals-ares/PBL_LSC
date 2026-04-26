@@ -22,13 +22,14 @@ class ReviewForm
                 TextInput::make('rating')
                     ->required()
                     ->numeric(),
-                Textarea::make('comment')
-                    ->columnSpanFull(),
                 FileUpload::make('photo')
                     ->disk('public')
                     ->fetchFileInformation(false)
                     ->image()
                     ->directory('review-images'),
+                Textarea::make('comment')
+                    ->columnSpanFull(),
+                
             ]);
     }
 }

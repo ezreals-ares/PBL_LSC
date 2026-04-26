@@ -31,6 +31,7 @@ class OrderForm
                 ->required(),
 
             DatePicker::make('order_date')->required(),
+            DatePicker::make('estimated_finish'),
 
             Select::make('pickup_method')
                 ->options(['pickup' => 'Pickup', 'antar langsung' => 'Antar Langsung'])
@@ -46,11 +47,6 @@ class OrderForm
                 ])
                 ->default('pending')
                 ->required(),
-
-            DatePicker::make('estimated_finish'),
-
-            TextInput::make('total_price')
-                ->required()->numeric()->default(0)->readOnly()->prefix('Rp'),
 
             Repeater::make('order_details')
                 ->relationship('orderDetails')
@@ -82,6 +78,11 @@ class OrderForm
                     }, 0);
                     $set('total_price', $total);
                 }),
+
+            TextInput::make('total_price')
+                ->required()->numeric()->default(0)->readOnly()->prefix('Rp'),
+
+            
         ]);
     }
 }

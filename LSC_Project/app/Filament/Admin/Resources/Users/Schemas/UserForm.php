@@ -6,6 +6,7 @@ use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
+use Filament\Forms\Components\Select;
 
 class UserForm
 {
@@ -25,12 +26,16 @@ class UserForm
                 TextInput::make('phone')
                     ->tel()
                     ->required(),
+                Select::make('role')
+                    ->required()
+                    ->default('customer')
+                    ->options([
+                        'customer' => 'Customer',
+                        'admin' => 'Admin',
+                    ]),
                 Textarea::make('address')
                     ->required()
                     ->columnSpanFull(),
-                TextInput::make('role')
-                    ->required()
-                    ->default('customer'),
             ]);
     }
 }

@@ -15,12 +15,10 @@ class ServiceForm
             ->components([
                 TextInput::make('service_name')
                     ->required(),
-                Textarea::make('description')
-                    ->columnSpanFull(),
                 TextInput::make('price')
                     ->required()
                     ->numeric()
-                    ->prefix('$'),
+                    ->prefix('Rp'),
                 TextInput::make('estimated_days')
                     ->required()
                     ->numeric(),
@@ -29,6 +27,8 @@ class ServiceForm
                     ->disk('public')
                     ->fetchFileInformation(false)
                     ->directory('service_photos'),
+                Textarea::make('description')
+                    ->columnSpanFull(),
             ]);
     }
 }

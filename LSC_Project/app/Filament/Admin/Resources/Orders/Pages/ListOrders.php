@@ -36,10 +36,10 @@ class ListOrders extends ListRecords
                 ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 'diproses')),
 
             'selesai' => Tab::make('Selesai')
+                ->badge(Order::query()->where('status', 'selesai')->count())
+                ->badgeColor('success')
                 ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 'selesai')),
 
-            'dibatalkan' => Tab::make('Dibatalkan')
-                ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 'dibatalkan')),
         ];
     }
 }
