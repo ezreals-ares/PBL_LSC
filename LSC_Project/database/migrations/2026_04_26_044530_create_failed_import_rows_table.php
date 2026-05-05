@@ -11,12 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('services', function (Blueprint $table) {
+        Schema::create('failed_import_rows', function (Blueprint $table): void {
             $table->id();
-            $table->string('service_name');
-            $table->text('description')->nullable();
-            $table->decimal('price', 10, 2);
-            $table->unsignedTinyInteger('estimated_days')->default(1);
+            $table->json('data');
+            $table->foreignId('import_id')->constrained()->cascadeOnDelete();
+            $table->text('validation_error')->nullable();
             $table->timestamps();
         });
     }
@@ -26,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('services');
+        Schema::dropIfExists('failed_import_rows');
     }
 };
