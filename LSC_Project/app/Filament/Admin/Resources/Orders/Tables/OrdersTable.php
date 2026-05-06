@@ -29,8 +29,18 @@ class OrdersTable
                     ->label('Customer')
                     ->searchable(),
                 TextColumn::make('jenis_sepatu')
-                    ->label('Jenis Sepatu')
-                    ->searchable(),
+                    ->label('Merek Sepatu')
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('material_sepatu')
+                    ->label('Material')
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('catatan')
+                    ->label('Catatan')
+                    ->limit(40)
+                    ->wrap()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('order_date')
                     ->label('Tanggal Order')
                     ->date('d M Y')
