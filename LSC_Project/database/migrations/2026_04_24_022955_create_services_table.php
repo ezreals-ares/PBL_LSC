@@ -18,6 +18,7 @@ return new class extends Migration
         $table->decimal('price', 10, 2);
         $table->integer('estimated_days');
         $table->string('gambar')->nullable();
+        $table->softDeletes();   // deleted_at — keeps row in DB for existing orders
         $table->timestamps();
     });
     }

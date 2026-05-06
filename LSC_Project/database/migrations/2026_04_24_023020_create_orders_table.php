@@ -19,7 +19,9 @@ return new class extends Migration
         $table->enum('status', ['pending', 'diproses', 'selesai', 'dibatalkan'])->default('pending');
         $table->date('estimated_finish')->nullable();
         $table->decimal('total_price', 10, 2)->default(0);
-        $table->string('jenis_sepatu')->nullable();
+        $table->string('jenis_sepatu')->nullable();       // merek/brand sepatu
+        $table->string('material_sepatu')->nullable();     // material: kanvas, kulit, dll
+        $table->text('catatan')->nullable();               // catatan tambahan customer
         $table->timestamps();
     });
     }
