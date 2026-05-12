@@ -365,7 +365,7 @@
                 {{-- Merek / Brand --}}
                 <div class="form-group">
                     <label class="form-label" for="merek-input">
-                        Merek Sepatu <span style="color:var(--text-light);font-weight:400;">(Opsional)</span>
+                        Merek Sepatu <span style="color:var(--danger);font-size:0.85rem;">*</span>
                     </label>
                     <input type="text"
                            name="jenis_sepatu"
@@ -373,14 +373,16 @@
                            class="form-control"
                            value="{{ old('jenis_sepatu') }}"
                            placeholder="Contoh: Nike, Adidas, Vans, New Balance..."
-                           maxlength="100">
+                           maxlength="100"
+                           required>
 
                     {{-- Quick-select brand chips --}}
                     <div class="brand-chips">
-                        @foreach(['Nike','Adidas','Vans','New Balance','Converse','Puma','Reebok','Jordan','Skechers','Lainnya'] as $brand)
+                        @foreach(['Nike','Adidas','Vans','New Balance','Converse','Puma','Reebok','Jordan','Skechers'] as $brand)
                         <button type="button" class="brand-chip" onclick="selectBrand('{{ $brand }}')">{{ $brand }}</button>
                         @endforeach
                     </div>
+                    <p class="inline-error" id="merek-error">⚠ Merek / jenis sepatu wajib diisi.</p>
                     @error('jenis_sepatu')
                         <p class="form-error" style="display:block;">{{ $message }}</p>
                     @enderror
@@ -388,13 +390,33 @@
 
                 {{-- Material --}}
                 <div class="form-group">
-                    <label class="form-label" for="material-select">Material Sepatu</label>
-                    <select name="material_sepatu" id="material-select" class="form-control">
+                    <label class="form-label" for="material-select">
+                        Material Sepatu <span style="color:var(--danger);font-size:0.85rem;">*</span>
+                    </label>
+                    <select name="material_sepatu" id="material-select" class="form-control"
+                            onchange="handleMaterialChange(this.value)">
                         <option value="">-- Pilih Material --</option>
                         @foreach(['Kanvas','Kulit','Kulit Sintetis','Suede','Nubuck','Mesh / Rajut','Karet','Lainnya'] as $mat)
-                            <option value="{{ $mat }}" {{ old('material_sepatu') === $mat ? 'selected' : '' }}>{{ $mat }}</option>
+                            <option value="{{ $mat }}"
+                                {{ old('material_sepatu') === $mat ? 'selected' : '' }}
+                                {{ (old('material_sepatu') === null && !in_array(old('material_sepatu_lain'), ['', null]) && $mat === 'Lainnya') ? 'selected' : '' }}>
+                                {{ $mat }}
+                            </option>
                         @endforeach
                     </select>
+
+                    {{-- Custom input shown only when 'Lainnya' is selected --}}
+                    <div id="material-custom-wrap" style="margin-top:0.75rem; display:{{ old('material_sepatu') === 'Lainnya' ? 'block' : 'none' }};">
+                        <input type="text"
+                               name="material_sepatu_lain"
+                               id="material-custom-input"
+                               class="form-control"
+                               value="{{ old('material_sepatu_lain') }}"
+                               placeholder="Tuliskan material sepatu Anda..."
+                               maxlength="100">
+                    </div>
+
+                    <p class="inline-error" id="material-error">⚠ Material sepatu wajib dipilih.</p>
                     @error('material_sepatu')
                         <p class="form-error" style="display:block;">{{ $message }}</p>
                     @enderror
@@ -569,13 +591,61 @@ function selectPickup(val) {
     radios.forEach(r => { r.checked = (r.value === val); });
 }
 
+// ── Material 'Lainnya' toggle ─────────────────────────────────────────────────
+function handleMaterialChange(val) {
+    const wrap = document.getElementById('material-custom-wrap');
+    const customInput = document.getElementById('material-custom-input');
+    if (val === 'Lainnya') {
+        wrap.style.display = 'block';
+        customInput.setAttribute('required', 'required');
+    } else {
+        wrap.style.display = 'none';
+        customInput.removeAttribute('required');
+        customInput.value = '';
+    }
+}
+// Init on page load (for old() repopulation)
+handleMaterialChange(document.getElementById('material-select').value);
+
 // ── Form submit validation ────────────────────────────────────────────────────
 document.getElementById('order-form').addEventListener('submit', function(e) {
+    let hasError = false;
+
+    // 1) Service check
     if (Object.keys(selected).length === 0) {
-        e.preventDefault();
+        hasError = true;
         const err = document.getElementById('service-error');
         err.style.display = 'block';
-        err.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        if (!hasError) err.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    } else {
+        document.getElementById('service-error').style.display = 'none';
+    }
+
+    // 2) Merek check
+    const merekVal = document.getElementById('merek-input').value.trim();
+    if (!merekVal) {
+        hasError = true;
+        const err = document.getElementById('merek-error');
+        err.style.display = 'block';
+    } else {
+        document.getElementById('merek-error').style.display = 'none';
+    }
+
+    // 3) Material check
+    const matVal = document.getElementById('material-select').value;
+    if (!matVal) {
+        hasError = true;
+        const err = document.getElementById('material-error');
+        err.style.display = 'block';
+    } else {
+        document.getElementById('material-error').style.display = 'none';
+    }
+
+    if (hasError) {
+        e.preventDefault();
+        // Scroll to first visible error
+        const first = document.querySelector('.inline-error[style*="block"]');
+        if (first) first.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
 });
 

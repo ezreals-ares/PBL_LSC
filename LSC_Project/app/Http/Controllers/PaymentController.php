@@ -18,12 +18,11 @@ class PaymentController extends Controller
         // Prevent accessing other users' orders
         abort_if($order->user_id !== auth()->id(), 403);
 
-        // Order must be at least 'diproses' before payment is needed
-        // (status: pending → diproses → selesai; no 'dikonfirmasi' step in actual DB)
-        if ($order->status === 'pending') {
+        // Order must not be cancelled
+        if ($order->status === 'dibatalkan') {
             return redirect()
                 ->route('order.show', $order->order_id)
-                ->with('error', 'Pesanan belum dikonfirmasi admin. Pembayaran belum tersedia.');
+                ->with('error', 'Pesanan ini telah dibatalkan. Pembayaran tidak tersedia.');
         }
 
         $order->load(['orderDetails.service', 'payment']);

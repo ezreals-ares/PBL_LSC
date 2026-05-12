@@ -19,7 +19,7 @@ Route::get('/', function () {
         ->get();
     $outlets  = Outlet::with('operationalHours')->get();
     return view('welcome', compact('services', 'reviews', 'outlets'));
-});
+})->name('landing');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

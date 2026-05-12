@@ -1,52 +1,207 @@
-<x-guest-layout>
-    <form method="POST" action="{{ route('register') }}">
-        @csrf
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<head>
+    @include('partials.welcome._head')
+    <style>
+        /* Auth specific styles */
+        body {
+            background: radial-gradient(circle at top right, var(--secondary) 0%, var(--white) 60%, var(--accent) 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 2rem;
+            font-family: 'Outfit', sans-serif;
+            position: relative;
+        }
+        .auth-container {
+            background: var(--white);
+            border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(2, 132, 199, 0.1);
+            display: flex;
+            width: 100%;
+            max-width: 480px;
+            min-height: auto;
+            overflow: hidden;
+            border: 1px solid rgba(224, 242, 254, 0.8);
+        }
+        .auth-form-section {
+            flex: 1;
+            padding: 3rem 4rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .auth-logo {
+            font-size: 2.2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .auth-logo i {
+            color: var(--primary);
+            font-size: 2rem;
+        }
+        .input-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+        .input-group label {
+            display: block;
+            color: var(--text-light);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        .input-group input {
+            width: 100%;
+            border: none;
+            border-bottom: 2px solid var(--accent);
+            padding: 0.5rem 0;
+            font-size: 1.05rem;
+            color: var(--text-dark);
+            outline: none;
+            background: transparent;
+            transition: border-color 0.3s;
+        }
+        .input-group input:focus {
+            border-bottom-color: var(--primary);
+        }
+        .input-group i {
+            position: absolute;
+            right: 0;
+            bottom: 10px;
+            color: var(--primary-light);
+            font-size: 1.2rem;
+        }
+        .btn-login {
+            width: 100%;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 9999px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 10px 20px -5px rgba(2, 132, 199, 0.4);
+            margin-top: 1rem;
+        }
+        .btn-login:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 15px 25px -5px rgba(2, 132, 199, 0.5);
+        }
+        .auth-footer {
+            margin-top: 2rem;
+            text-align: center;
+            font-size: 1rem;
+            color: var(--text-light);
+        }
+        .auth-footer a {
+            color: var(--primary);
+            font-weight: 700;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        .auth-footer a:hover {
+            color: var(--primary-hover);
+        }
+        
+        /* (Image section removed) */
+        
+        .error-msg {
+            color: #ef4444;
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            display: block;
+        }
 
-        <!-- Name -->
-        <div>
-            <x-input-label for="name" :value="__('Name')" />
-            <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
-            <x-input-error :messages="$errors->get('name')" class="mt-2" />
+        @media (max-width: 768px) {
+            .auth-container {
+                border-radius: 20px;
+            }
+            .auth-form-section {
+                padding: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Animated Soap Bubbles -->
+    <div class="bubbles">
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+    </div>
+
+<div class="auth-container relative z-10">
+    <div class="auth-form-section">
+        <a href="{{ route('landing') }}" style="text-decoration: none;">
+            <div class="auth-logo">
+                <i class="fas fa-shoe-prints"></i> LSC.
+            </div>
+        </a>
+
+        <form method="POST" action="{{ route('register') }}">
+            @csrf
+
+            <div class="input-group">
+                <label for="name">Nama Lengkap</label>
+                <input type="text" id="name" name="name" value="{{ old('name') }}" required autofocus placeholder="John Smith">
+                <i class="far fa-id-badge"></i>
+                @error('name')
+                    <span class="error-msg">{{ $message }}</span>
+                @enderror
+            </div>
+
+            <div class="input-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" value="{{ old('email') }}" required placeholder="johnsmith001@gmail.com">
+                <i class="far fa-envelope"></i>
+                @error('email')
+                    <span class="error-msg">{{ $message }}</span>
+                @enderror
+            </div>
+
+            <div class="input-group">
+                <label for="password">Kata Sandi</label>
+                <input type="password" id="password" name="password" required placeholder="••••••">
+                <i class="fas fa-unlock-alt"></i>
+                @error('password')
+                    <span class="error-msg">{{ $message }}</span>
+                @enderror
+            </div>
+
+            <div class="input-group">
+                <label for="password_confirmation">Konfirmasi Kata Sandi</label>
+                <input type="password" id="password_confirmation" name="password_confirmation" required placeholder="••••••">
+                <i class="fas fa-lock"></i>
+                @error('password_confirmation')
+                    <span class="error-msg">{{ $message }}</span>
+                @enderror
+            </div>
+
+            <button type="submit" class="btn-login">DAFTAR</button>
+        </form>
+
+        <div class="auth-footer">
+            Sudah punya akun? <a href="{{ route('login') }}">Masuk</a>
         </div>
+    </div>
+</div>
 
-        <!-- Email Address -->
-        <div class="mt-4">
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
-        </div>
-
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
-
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="new-password" />
-
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
-
-        <!-- Confirm Password -->
-        <div class="mt-4">
-            <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
-
-            <x-text-input id="password_confirmation" class="block mt-1 w-full"
-                            type="password"
-                            name="password_confirmation" required autocomplete="new-password" />
-
-            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
-        </div>
-
-        <div class="flex items-center justify-end mt-4">
-            <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('login') }}">
-                {{ __('Already registered?') }}
-            </a>
-
-            <x-primary-button class="ms-4">
-                {{ __('Register') }}
-            </x-primary-button>
-        </div>
-    </form>
-</x-guest-layout>
+</body>
+</html>
