@@ -42,6 +42,10 @@ class OrderSeeder extends Seeder
                     'Timberland 6-Inch', 'Dr. Martens 1460', 'Nike Dunk Low',
                     'Asics Gel-Kayano', 'Skechers D\'Lites', 'Crocs Classic',
                 ]),
+                'material_sepatu'  => fake()->randomElement([
+                    'Kanvas', 'Kulit', 'Kulit Sintetis', 'Suede',
+                    'Nubuck', 'Mesh / Rajut', 'Karet',
+                ]),
                 'pickup_method'    => fake()->randomElement(['antar langsung', 'pickup']),
                 'status'           => $status,
                 'estimated_finish' => $estimatedFinish,

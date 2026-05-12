@@ -8,20 +8,13 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        flex-wrap: wrap;
-        gap: 1.25rem;
-        margin-bottom: 1.25rem;
+        margin-bottom: 2rem;
         width: 100%;
     }
     .history-header h1 {
         font-size: 2rem;
         font-weight: 800;
         color: var(--text-dark);
-    }
-    .history-subtext {
-        color: var(--text-light);
-        font-size: 0.9rem;
-        margin-bottom: 2.5rem;
     }
 
     /* Flash messages */
@@ -125,18 +118,102 @@
         font-weight: 800;
         color: var(--primary-light);
     }
+
+    /* ── Stepper Mini (Visual Progress) ── */
+    .stepper-wrap {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 0;
+        margin-top: 1rem;
+        padding: 1rem;
+        background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+        border-radius: 14px;
+        border: 1px solid var(--border);
+        width: 100%;
+        flex: 1 1 100%;
+    }
+    .step-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+        flex: 1;
+        position: relative;
+    }
+    .step-item:not(:last-child)::after {
+        content: '';
+        position: absolute;
+        top: 16px; /* Center of 32px circle */
+        left: calc(50% + 16px);
+        width: calc(100% - 32px);
+        height: 3px;
+        background: var(--border);
+        z-index: 0;
+        border-radius: 2px;
+    }
+    .step-item.done:not(:last-child)::after {
+        background: linear-gradient(90deg, var(--primary), var(--primary-light));
+    }
+    .step-circle {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: var(--white);
+        border: 2px solid var(--border);
+        color: var(--text-light);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 800;
+        font-size: 0.85rem;
+        position: relative;
+        z-index: 1;
+        transition: all 0.3s;
+    }
+    .step-item.done .step-circle {
+        background: linear-gradient(135deg, var(--primary), var(--primary-light));
+        border-color: var(--primary);
+        color: white;
+    }
+    .step-item.current .step-circle {
+        background: var(--primary);
+        border-color: var(--primary-light);
+        color: white;
+        box-shadow: 0 0 0 4px rgba(2, 132, 199, 0.2);
+        animation: pulse-ring-mini 2s infinite;
+    }
+    .step-item.cancelled .step-circle {
+        background: #ef4444;
+        border-color: #fca5a5;
+        color: white;
+    }
+    @keyframes pulse-ring-mini {
+        0%   { box-shadow: 0 0 0 0 rgba(2, 132, 199, 0.4); }
+        70%  { box-shadow: 0 0 0 8px rgba(2, 132, 199, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(2, 132, 199, 0); }
+    }
+    .step-label {
+        font-size: 0.75rem;
+        color: var(--text-light);
+        text-align: center;
+        font-weight: 700;
+        transition: all 0.2s;
+    }
+    .step-item.done .step-label { color: var(--text-dark); }
+    .step-item.current .step-label { color: var(--primary); font-size: 0.8rem; }
+    .step-item.cancelled .step-label { color: #ef4444; }
 </style>
 @endsection
 
 @section('content')
 
-<div class="history-header">
+<div class="history-header" style="margin-bottom: 2rem;">
     <h1>Riwayat Pesanan Saya</h1>
     <a href="{{ route('order.create') }}" class="btn btn-primary" style="margin-left:auto;">
-        + Buat Pesanan Baru
+        <i class="fas fa-plus"></i> Buat Pesanan
     </a>
 </div>
-<p class="history-subtext">Kelola dan pantau semua pesanan Anda di sini.</p>
 
 @if(session('success'))
     <div class="flash-success">
@@ -194,22 +271,65 @@
             </div>
         </div>
 
-        {{-- Right: status + price + action --}}
+        {{-- Right: price + action --}}
         <div class="order-card-right">
-            <span class="badge badge-{{ $order->status }}">
-                @switch($order->status)
-                    @case('pending')    Menunggu @break
-                    @case('diproses')   Diproses @break
-                    @case('selesai')    Selesai  @break
-                    @case('dibatalkan') Dibatalkan @break
-                @endswitch
-            </span>
             <span class="order-card-price">
                 Rp {{ number_format($order->total_price, 0, ',', '.') }}
             </span>
             <a href="{{ route('order.show', $order->order_id) }}" class="btn btn-outline btn-sm">
                 Lihat Detail
             </a>
+        </div>
+
+        {{-- Bottom: Visual Progress --}}
+        @php
+            $statusFlow = ['pending', 'diproses', 'selesai'];
+            $currentStatus = $order->status;
+            $isCancelled = $currentStatus === 'dibatalkan';
+
+            $stepLabels = [
+                'pending'   => 'Menunggu',
+                'diproses'  => 'Diproses',
+                'selesai'   => 'Selesai',
+                'dibatalkan'=> 'Dibatalkan',
+            ];
+            $currentIndex = array_search($currentStatus, $statusFlow);
+        @endphp
+        <div class="stepper-wrap">
+            @if(!$isCancelled)
+                @foreach($statusFlow as $i => $step)
+                    @php
+                        $stepIndex = array_search($step, $statusFlow);
+                        if ($currentIndex === false) $cls = 'future';
+                        elseif ($stepIndex < $currentIndex) $cls = 'done';
+                        elseif ($stepIndex === $currentIndex) $cls = 'current';
+                        else $cls = 'future';
+                    @endphp
+                    <div class="step-item {{ $cls }}">
+                        <div class="step-circle">
+                            @if($cls === 'done')
+                                <i class="fas fa-check" style="font-size:0.7rem;"></i>
+                            @elseif($cls === 'current')
+                                <i class="fas fa-circle-dot" style="font-size:0.75rem;"></i>
+                            @else
+                                {{ $i + 1 }}
+                            @endif
+                        </div>
+                        <span class="step-label">{{ $stepLabels[$step] }}</span>
+                    </div>
+                @endforeach
+            @else
+                @foreach(['pending', 'diproses'] as $i => $step)
+                    <div class="step-item future">
+                        <div class="step-circle">{{ $i + 1 }}</div>
+                        <span class="step-label">{{ $stepLabels[$step] }}</span>
+                    </div>
+                @endforeach
+                <div class="step-item cancelled">
+                    <div class="step-circle"><i class="fas fa-ban" style="font-size:0.7rem;"></i></div>
+                    <span class="step-label">Dibatalkan</span>
+                </div>
+            @endif
         </div>
     </div>
     @endforeach

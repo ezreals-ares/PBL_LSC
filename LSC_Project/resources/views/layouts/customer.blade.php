@@ -88,6 +88,114 @@
         }
         .btn-nav-logout:hover { color: var(--danger); }
 
+        /* ── User Dropdown ── */
+        .user-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        .user-dropdown-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 0.25rem 0.5rem 0.25rem 0.25rem;
+            border-radius: 9999px;
+            transition: background 0.2s;
+            border: 1px solid transparent;
+        }
+        .user-dropdown-btn:hover {
+            background: var(--secondary);
+            border-color: var(--accent);
+        }
+        .user-avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 10px rgba(2, 132, 199, 0.3);
+        }
+        .user-name {
+            font-weight: 700;
+            color: var(--text-dark);
+            font-size: 0.95rem;
+            font-family: 'Outfit', sans-serif;
+        }
+        .user-dropdown-btn i.fa-chevron-down {
+            color: var(--text-light);
+            font-size: 0.8rem;
+            transition: transform 0.3s;
+        }
+        .user-dropdown-menu {
+            position: absolute;
+            top: 110%;
+            right: 0;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            min-width: 200px;
+            padding: 0.5rem;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid var(--border);
+            z-index: 1000;
+        }
+        .user-dropdown:hover .user-dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        .user-dropdown:hover .user-dropdown-btn i.fa-chevron-down {
+            transform: rotate(180deg);
+        }
+        .user-dropdown-menu a, .user-dropdown-menu button.logout-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            width: 100%;
+            padding: 0.75rem 1rem;
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            border-radius: 10px;
+            text-align: left;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+        .user-dropdown-menu a i, .user-dropdown-menu button.logout-btn i {
+            color: var(--primary-light);
+            font-size: 1.1rem;
+            width: 20px;
+            text-align: center;
+        }
+        .user-dropdown-menu a:hover {
+            background: var(--secondary);
+            color: var(--primary);
+        }
+        .user-dropdown-menu button.logout-btn:hover {
+            background: #fee2e2;
+            color: #ef4444;
+        }
+        .user-dropdown-menu button.logout-btn:hover i {
+            color: #ef4444;
+        }
+        .user-dropdown-menu form {
+            margin: 0;
+        }
+
         /* ── Page container ── */
         .page-container {
             max-width: 1200px;
@@ -238,11 +346,24 @@
                 @if(auth()->user()->role === 'admin')
                     <a href="{{ url('/admin') }}" class="btn-nav-primary">Dashboard Admin</a>
                 @else
-                    <a href="{{ route('order.history') }}">Pesanan Saya</a>
-                    <form method="POST" action="{{ route('logout') }}" style="display:inline;">
-                        @csrf
-                        <button type="submit" class="btn-nav-logout">Keluar</button>
-                    </form>
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <a href="{{ route('order.history') }}" class="btn btn-outline btn-sm">Pesanan Saya</a>
+                        <div class="user-dropdown">
+                            <button class="user-dropdown-btn" style="padding-left: 0.25rem;">
+                                <div class="user-avatar">
+                                    {{ substr(auth()->user()->name, 0, 1) }}
+                                </div>
+                                <i class="fas fa-chevron-down" style="margin-left: 0.25rem;"></i>
+                            </button>
+                            <div class="user-dropdown-menu">
+                                <a href="{{ route('profile.edit') }}"><i class="fas fa-user-circle"></i> Profil Saya</a>
+                                <form method="POST" action="{{ route('logout') }}">
+                                    @csrf
+                                    <button type="submit" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Keluar</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 @endif
             @else
                 <a href="{{ route('login') }}">Masuk</a>

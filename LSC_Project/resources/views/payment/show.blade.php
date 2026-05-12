@@ -38,20 +38,18 @@
     .copy-btn {
         display: inline-flex;
         align-items: center;
-        gap: 0.4rem;
-        padding: 0.5rem 1rem;
-        border: 2px solid var(--primary-light);
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        border: none;
         color: var(--primary);
         background: var(--secondary);
-        border-radius: 9999px;
+        border-radius: 8px;
         cursor: pointer;
-        font-family: 'Outfit', sans-serif;
-        font-weight: 700;
-        font-size: 0.85rem;
         transition: all 0.2s;
-        margin-top: 0.75rem;
+        margin-left: 0.5rem;
     }
-    .copy-btn:hover { background: var(--primary-light); color: white; }
+    .copy-btn:hover { background: var(--primary); color: white; }
 
     /* Steps list */
     .steps-list { counter-reset: step; list-style: none; padding: 0; }
@@ -165,10 +163,30 @@
 
     .badge-unverified { background: #fef3c7; color: #92400e; }
     .badge-verified   { background: #dcfce7; color: #166534; }
+
+    /* Back link */
+    .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: var(--text-light);
+        font-weight: 600;
+        font-size: 0.95rem;
+        text-decoration: none;
+        transition: color 0.2s;
+        margin-bottom: 1rem;
+    }
+    .back-link:hover {
+        color: var(--primary);
+    }
 </style>
 @endsection
 
 @section('content')
+
+<a href="{{ route('order.show', $order->order_id) }}" class="back-link">
+    <i class="fas fa-arrow-left"></i> Kembali ke Detail Pesanan
+</a>
 
 <div class="payment-header">
     <h1>Pembayaran Pesanan</h1>
@@ -214,11 +232,10 @@
                 </tr>
                 <tr>
                     <td>No. Rekening</td>
-                    <td>
-                        <span id="rek-number">1234567890</span>
-                        <button type="button" class="copy-btn" id="copy-btn"
-                                onclick="copyRekening()">
-                            📋 Salin Nomor Rekening
+                    <td style="display: flex; align-items: center;">
+                        <span id="rek-number" style="font-family: monospace; font-size: 1.1rem; letter-spacing: 1px;">1234567890</span>
+                        <button type="button" class="copy-btn" id="copy-btn" onclick="copyRekening()" title="Salin Nomor">
+                            <i class="far fa-copy"></i>
                         </button>
                     </td>
                 </tr>
@@ -380,11 +397,6 @@
                 </div>
             </div>
 
-        </div>
-
-        <a href="{{ route('order.show', $order->order_id) }}" class="back-link" style="margin-top:1rem;display:inline-flex;">
-            ← Kembali ke Detail Pesanan
-        </a>
     </div>
 
 </div>
@@ -396,11 +408,11 @@ function copyRekening() {
     const rek = document.getElementById('rek-number').textContent.trim();
     navigator.clipboard.writeText(rek).then(function() {
         const btn = document.getElementById('copy-btn');
-        btn.textContent = '✓ Disalin!';
+        btn.innerHTML = '<i class="fas fa-check"></i>';
         btn.style.background = 'var(--success)';
         btn.style.color = 'white';
         setTimeout(function() {
-            btn.innerHTML = '📋 Salin Nomor Rekening';
+            btn.innerHTML = '<i class="far fa-copy"></i>';
             btn.style.background = '';
             btn.style.color = '';
         }, 2000);

@@ -21,8 +21,8 @@
             box-shadow: 0 20px 60px rgba(2, 132, 199, 0.1);
             display: flex;
             width: 100%;
-            max-width: 1000px;
-            min-height: 600px;
+            max-width: 480px;
+            min-height: auto;
             overflow: hidden;
             border: 1px solid rgba(224, 242, 254, 0.8);
         }
@@ -119,33 +119,7 @@
             color: var(--primary-hover);
         }
         
-        /* Right Side Illustration Area */
-        .auth-image-section {
-            flex: 1.2;
-            background: transparent;
-            position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        .auth-image-section::before {
-            display: none;
-        }
-
-        .auth-image-content {
-            position: relative;
-            z-index: 2;
-            width: 90%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        .auth-image-content img {
-            max-width: 100%;
-            filter: drop-shadow(0 20px 30px rgba(0,0,0,0.15));
-            mix-blend-mode: multiply;
-        }
+        /* (Image section removed) */
         
         .error-msg {
             color: #ef4444;
@@ -156,11 +130,7 @@
 
         @media (max-width: 768px) {
             .auth-container {
-                flex-direction: column;
                 border-radius: 20px;
-            }
-            .auth-image-section {
-                display: none;
             }
             .auth-form-section {
                 padding: 2.5rem;
@@ -214,12 +184,6 @@
 
         <div class="auth-footer">
             Kembali ke <a href="{{ route('login') }}">Masuk</a>
-        </div>
-    </div>
-    
-    <div class="auth-image-section">
-        <div class="auth-image-content">
-            <img src="{{ asset('images/hero-clean.png') }}" alt="Clean Shoes">
         </div>
     </div>
 </div>

@@ -29,80 +29,96 @@
         letter-spacing: 1px;
     }
 
-    /* ── Stepper ── */
+    /* ── Stepper (Visual Progress) ── */
     .stepper-wrap {
         display: flex;
         align-items: flex-start;
-        justify-content: center;
+        justify-content: space-between; /* Spread evenly */
         gap: 0;
-        margin-bottom: 1rem;
+        margin: 1rem 0 2rem;
+        padding: 2rem 1.5rem;
+        background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+        border-radius: 20px;
+        border: 1px solid var(--border);
         overflow-x: auto;
-        padding-bottom: 0.5rem;
     }
     .step-item {
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 0.5rem;
-        min-width: 80px;
+        gap: 0.75rem;
+        flex: 1;
         position: relative;
     }
     .step-item:not(:last-child)::after {
         content: '';
         position: absolute;
-        top: 18px;
-        left: calc(50% + 18px);
-        width: calc(100% - 36px);
-        height: 3px;
+        top: 25px; /* Center of the 50px circle */
+        left: calc(50% + 25px);
+        width: calc(100% - 50px);
+        height: 4px;
         background: var(--border);
         z-index: 0;
+        border-radius: 2px;
     }
-    .step-item.done:not(:last-child)::after { background: var(--primary-light); }
+    .step-item.done:not(:last-child)::after {
+        background: linear-gradient(90deg, var(--primary), var(--primary-light));
+    }
     .step-circle {
-        width: 38px;
-        height: 38px;
+        width: 54px;
+        height: 54px;
         border-radius: 50%;
-        background: var(--border);
+        background: var(--white);
+        border: 3px solid var(--border);
         color: var(--text-light);
         display: flex;
         align-items: center;
         justify-content: center;
         font-weight: 800;
-        font-size: 0.95rem;
+        font-size: 1.25rem;
         position: relative;
         z-index: 1;
         flex-shrink: 0;
-        transition: all 0.3s;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 4px 10px rgba(0,0,0,0.05);
     }
     .step-item.done .step-circle {
-        background: var(--primary-light);
+        background: linear-gradient(135deg, var(--primary), var(--primary-light));
+        border-color: var(--primary);
         color: white;
+        box-shadow: 0 6px 15px rgba(2, 132, 199, 0.3);
     }
     .step-item.current .step-circle {
         background: var(--primary);
+        border-color: var(--primary-light);
         color: white;
-        box-shadow: 0 0 0 5px rgba(2,132,199,0.2);
-        animation: pulse-ring 2s infinite;
+        box-shadow: 0 0 0 6px rgba(2, 132, 199, 0.2);
+        animation: pulse-ring-large 2s infinite;
+        transform: scale(1.1);
     }
     .step-item.cancelled .step-circle {
         background: #ef4444;
+        border-color: #fca5a5;
         color: white;
+        transform: scale(1.1);
+        box-shadow: 0 6px 15px rgba(239, 68, 68, 0.3);
     }
-    @keyframes pulse-ring {
-        0%  { box-shadow: 0 0 0 0 rgba(2,132,199,0.35); }
-        70% { box-shadow: 0 0 0 10px rgba(2,132,199,0); }
-        100%{ box-shadow: 0 0 0 0 rgba(2,132,199,0); }
+    @keyframes pulse-ring-large {
+        0%   { box-shadow: 0 0 0 0 rgba(2, 132, 199, 0.4); }
+        70%  { box-shadow: 0 0 0 15px rgba(2, 132, 199, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(2, 132, 199, 0); }
     }
     .step-label {
-        font-size: 0.72rem;
+        font-size: 0.9rem;
         color: var(--text-light);
         text-align: center;
-        font-weight: 600;
-        max-width: 80px;
+        font-weight: 700;
+        max-width: 120px;
+        transition: all 0.3s;
     }
-    .step-item.done .step-label,
-    .step-item.current .step-label { color: var(--primary); }
-    .step-item.cancelled .step-label { color: #ef4444; }
+    .step-item.done .step-label { color: var(--text-dark); }
+    .step-item.current .step-label { color: var(--primary); font-size: 0.95rem; transform: translateY(2px); }
+    .step-item.cancelled .step-label { color: #ef4444; font-size: 0.95rem; }
 
     /* Info grid */
     .info-grid {
@@ -416,23 +432,14 @@
     <div class="card">
         <div class="section-heading">Status Pembayaran</div>
 
-        @if($order->status === 'pending')
-            <div class="alert-block alert-warning">
-                <span class="alert-icon"><i class="fas fa-clock"></i></span>
-                <div class="alert-body">
-                    <h3>Menunggu Konfirmasi Admin</h3>
-                    <p>Pesanan Anda sedang dalam peninjauan admin. Pembayaran akan tersedia setelah pesanan dikonfirmasi.</p>
-                </div>
-            </div>
-
-        @elseif(($order->status === 'diproses' || $order->status === 'selesai') && !$order->payment)
+        @if(in_array($order->status, ['pending', 'diproses', 'selesai']) && !$order->payment)
             <div class="alert-block alert-cyan">
                 <span class="alert-icon"><i class="fas fa-credit-card"></i></span>
                 <div class="alert-body">
                     <h3>Lakukan Pembayaran Sekarang</h3>
-                    <p>Pesanan Anda telah dikonfirmasi. Silakan lakukan pembayaran sebesar
+                    <p>Silakan lakukan pembayaran sebesar
                        <strong class="price-text">Rp {{ number_format($order->total_price, 0, ',', '.') }}</strong>
-                       untuk melanjutkan proses.
+                       untuk memproses pesanan Anda.
                     </p>
                     <a href="{{ route('payment.show', $order->order_id) }}" class="btn btn-primary btn-sm" style="margin-top:1rem;">
                         Bayar Sekarang
