@@ -13,6 +13,9 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use Filament\Actions\ViewAction;
+use Filament\Infolists\Components\ImageEntry;
+use Filament\Infolists\Components\TextEntry;
 
 class PaymentResource extends Resource
 {
@@ -50,5 +53,18 @@ class PaymentResource extends Resource
             'create' => CreatePayment::route('/create'),
             'edit' => EditPayment::route('/{record}/edit'),
         ];
+    }
+    public static function infolist(Schema $schema): Schema
+    {
+        return $schema
+            ->columns(1)
+            ->components([
+                ImageEntry::make('payment_proof')
+                    ->label('Bukti Pembayaran')
+                    ->disk('public')
+                    ->columnSpanFull()
+                    ->width('100%')
+                    ->height('100%'),
+            ]);
     }
 }
