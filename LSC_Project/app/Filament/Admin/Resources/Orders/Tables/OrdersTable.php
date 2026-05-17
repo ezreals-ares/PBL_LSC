@@ -14,6 +14,7 @@ use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\DeleteAction;
+use Filament\Actions\Exports\Enums\ExportFormat;
 
 class OrdersTable
 {
@@ -96,7 +97,11 @@ class OrdersTable
             ->headerActions([
                 ExportAction::make()
                     ->exporter(OrderExporter::class)
-                    ->label('Export CSV')
+                    ->label('Export')
+                    ->formats([
+                        ExportFormat::Xlsx,
+                        ExportFormat::Csv,
+                    ])
                     ->color('primary'),
             ])
             ->recordActions([

@@ -18,6 +18,7 @@ class ServicesTable
             ->columns([
                 TextColumn::make('service_name')
                     ->label('Nama Layanan')
+                    ->sortable()
                     ->searchable(),
                 TextColumn::make('price')
                     ->label('Harga')
