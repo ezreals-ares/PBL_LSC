@@ -20,6 +20,10 @@ class OperationalHourResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedClock;
 
+    protected static ?string $navigationLabel = 'Jam Operasional';
+    protected static ?string $modelLabel = 'Jam Operasional';
+    protected static ?string $pluralModelLabel = 'Daftar Jam Operasional';
+
     public static function form(Schema $schema): Schema
     {
         return OperationalHourForm::configure($schema);

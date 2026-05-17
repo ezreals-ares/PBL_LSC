@@ -17,17 +17,22 @@ class ServicesTable
         return $table
             ->columns([
                 TextColumn::make('service_name')
+                    ->label('Nama Layanan')
                     ->searchable(),
                 TextColumn::make('price')
+                    ->label('Harga')
                     ->money('IDR')
                     ->sortable(),
                 TextColumn::make('estimated_days')
+                    ->label('Estimasi Hari')
                     ->numeric()
                     ->sortable(),
                 TextColumn::make('description')
+                    ->label('Deskripsi')
                     ->limit(20)
                     ->wrap(),
                 ImageColumn::make('gambar')
+                    ->label('Gambar')   
                     ->disk('public'),
                 TextColumn::make('created_at')
                     ->dateTime()

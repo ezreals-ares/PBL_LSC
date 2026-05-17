@@ -20,6 +20,10 @@ class ReviewResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedChatBubbleLeftEllipsis;
 
+    protected static ?string $navigationLabel = 'Ulasan';
+    protected static ?string $modelLabel = 'Ulasan';
+    protected static ?string $pluralModelLabel = 'Daftar Ulasan';
+
     public static function form(Schema $schema): Schema
     {
         return ReviewForm::configure($schema);

@@ -20,6 +20,12 @@ class PaymentResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBanknotes;
 
+    protected static ?string $navigationLabel = 'Pembayaran';
+
+    protected static ?string $modelLabel = 'Pembayaran';
+
+    protected static ?string $pluralModelLabel = 'Daftar Pembayaran';
+
     public static function form(Schema $schema): Schema
     {
         return PaymentForm::configure($schema);

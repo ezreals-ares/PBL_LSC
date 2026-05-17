@@ -20,12 +20,16 @@ class OutletsTable
                     ->numeric()
                     ->sortable(),
                 TextColumn::make('outlet_name')
+                    ->label('Nama Outlet')
                     ->searchable(),
                 TextColumn::make('google_maps_link')
+                    ->label('Link Google Maps')
                     ->searchable(),
                 TextColumn::make('phone')
+                    ->label('Nomor Telepon')
                     ->searchable(),
                 TextColumn::make('address')
+                    ->label('Alamat')
                     ->searchable(),
                 TextColumn::make('created_at')
                     ->dateTime()

@@ -6,7 +6,6 @@ use App\Models\Service;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
 
@@ -27,34 +26,11 @@ class OrderForm
                 ->required(),
 
             TextInput::make('jenis_sepatu')
-                ->label('Merek Sepatu')
-                ->placeholder('Contoh: Nike, Adidas, Vans...')
-                ->maxLength(100),
-
-            Select::make('material_sepatu')
-                ->label('Material Sepatu')
-                ->options([
-                    'Kanvas'         => 'Kanvas',
-                    'Kulit'          => 'Kulit (Leather)',
-                    'Kulit Sintetis' => 'Kulit Sintetis',
-                    'Suede'          => 'Suede',
-                    'Nubuck'         => 'Nubuck',
-                    'Mesh / Rajut'   => 'Mesh / Rajut',
-                    'Karet'          => 'Karet',
-                    'Lainnya'        => 'Lainnya',
-                ])
-                ->searchable()
-                ->placeholder('-- Pilih Material --'),
-
-            Textarea::make('catatan')
-                ->label('Catatan Tambahan')
-                ->placeholder('Catatan kondisi sepatu atau permintaan khusus...')
-                ->rows(3)
-                ->maxLength(500)
-                ->columnSpanFull(),
+                ->label('Jenis Sepatu')
+                ->placeholder('Contoh: Nike Air Max, Adidas Ultraboost, dll')
+                ->required(),
 
             DatePicker::make('order_date')->required(),
-            DatePicker::make('estimated_finish'),
 
             Select::make('pickup_method')
                 ->options(['pickup' => 'Pickup', 'antar langsung' => 'Antar Langsung'])
@@ -70,6 +46,11 @@ class OrderForm
                 ])
                 ->default('pending')
                 ->required(),
+
+            DatePicker::make('estimated_finish'),
+
+            TextInput::make('total_price')
+                ->required()->numeric()->default(0)->readOnly()->prefix('Rp'),
 
             Repeater::make('order_details')
                 ->relationship('orderDetails')
@@ -101,11 +82,6 @@ class OrderForm
                     }, 0);
                     $set('total_price', $total);
                 }),
-
-            TextInput::make('total_price')
-                ->required()->numeric()->default(0)->readOnly()->prefix('Rp'),
-
-            
         ]);
     }
 }
