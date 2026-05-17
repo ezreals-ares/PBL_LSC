@@ -19,9 +19,9 @@ class OrderForm
                 ->searchable()
                 ->preload()
                 ->createOptionForm([
-                    TextInput::make('name')->required(),
-                    TextInput::make('phone')->tel()->required(),
-                    TextInput::make('address')->required(),
+                    TextInput::make('name')->label('Nama')->required(),
+                    TextInput::make('phone')->label('Nomor Telepon')->tel()->required(),
+                    TextInput::make('address')->label('Alamat')->required(),
                 ])
                 ->required(),
 
