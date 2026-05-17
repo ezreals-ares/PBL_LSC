@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 class PopularServicesChart extends ChartWidget
 {
     protected ?string $heading = 'Layanan Paling Diminati';
-    protected static ?int $sort = 3;
+    protected static ?int $sort = 4;
     protected int | string | array $columnSpan = 1;
 
     protected function getData(): array
