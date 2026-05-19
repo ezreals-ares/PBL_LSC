@@ -20,6 +20,10 @@ class OutletResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBuildingStorefront;
 
+    protected static ?string $navigationLabel = 'Toko';
+    protected static ?string $modelLabel = 'Toko';
+    protected static ?string $pluralModelLabel = 'Daftar Toko';
+
     public static function form(Schema $schema): Schema
     {
         return OutletForm::configure($schema);

@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 class RevenueChart extends ChartWidget
 {
     protected ?string $heading = 'Pendapatan';
-    protected static ?int $sort = 2;
+    protected static ?int $sort = 3;
     protected int|string|array $columnSpan = 1;
     public ?string $filter = '6_months'; 
 

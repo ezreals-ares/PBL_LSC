@@ -16,22 +16,28 @@ class OperationalHoursTable
         return $table
             ->columns([
                 TextColumn::make('outlet_id')
+                    ->label('Outlet ID')
                     ->numeric()
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable(),
                 TextColumn::make('day')
+                    ->label('Hari')
                     ->searchable(),
                 TextColumn::make('open_time')
+                    ->label('Waktu Buka')
                     ->time()
                     ->sortable(),
                 TextColumn::make('close_time')
+                    ->label('Waktu Tutup')
                     ->time()
                     ->sortable(),
                 TextColumn::make('created_at')
+                    ->label('Dibuat Pada')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
+                    ->label('Diperbarui Pada')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

@@ -9,7 +9,7 @@ use Filament\Widgets\TableWidget as BaseWidget;
 
 class LatestOrdersWidget extends BaseWidget
 {
-    protected static ?int $sort = 4;
+    protected static ?int $sort = 5;
     protected int | string | array $columnSpan = 'full';
 
     public function table(Table $table): Table
@@ -21,7 +21,7 @@ class LatestOrdersWidget extends BaseWidget
             ->columns([
                 Tables\Columns\TextColumn::make('order_id')->label('ID Order'),
                 Tables\Columns\TextColumn::make('user.name')->label('Customer'),
-                Tables\Columns\TextColumn::make('shoe_type')->label('Sepatu'),
+                Tables\Columns\TextColumn::make('jenis_sepatu')->label('Sepatu'),
                 Tables\Columns\TextColumn::make('status')
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {

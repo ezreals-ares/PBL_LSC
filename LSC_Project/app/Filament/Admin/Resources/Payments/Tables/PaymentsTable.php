@@ -9,6 +9,8 @@ use Filament\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Table;
+use Filament\Actions\ViewAction;
+
 
 class PaymentsTable
 {
@@ -21,14 +23,18 @@ class PaymentsTable
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable(),
                 TextColumn::make('payment_date')
+                    ->label('Tanggal Pembayaran')
                     ->date()
                     ->sortable(),
                 TextColumn::make('amount')
+                    ->label('Jumlah Pembayaran')
                     ->numeric()
                     ->sortable(),
                 TextColumn::make('payment_method')
+                    ->label('Metode Pembayaran')
                     ->searchable(),
                 TextColumn::make('status')
+                    ->label('Status')
                     ->badge() 
                         ->color(fn (string $state): string => match ($state) {
                             'verified' => 'success',
@@ -37,6 +43,7 @@ class PaymentsTable
                         })
                     ->searchable(),
                 ImageColumn::make('payment_proof')
+                    ->label('Bukti Pembayaran')
                     ->disk('public'),
                 TextColumn::make('created_at')
                     ->dateTime()
@@ -51,6 +58,7 @@ class PaymentsTable
                 //
             ])
             ->recordActions([
+                ViewAction::make(),
                 EditAction::make(),
                 DeleteAction::make(),
             ])

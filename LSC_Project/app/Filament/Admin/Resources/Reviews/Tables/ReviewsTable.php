@@ -22,16 +22,20 @@ class ReviewsTable
                     ->sortable()
                     ->searchable(),
                 TextColumn::make('order_id')
+                    ->label('ID Pesanan')
                     ->numeric()
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable(),
                 TextColumn::make('rating')
+                    ->label('Rating')
                     ->numeric()
                     ->sortable(),
                 TextColumn::make('comment')
+                    ->label('Komentar')
                     ->limit(50)
                     ->wrap(),
                 ImageColumn::make('photo')
+                    ->label('Foto')
                     ->disk('public'),
                 TextColumn::make('created_at')
                     ->dateTime()

@@ -18,13 +18,19 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Filament\Enums\ThemeMode;
 
 class AdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
         return $panel
+            ->databaseNotifications()
+            ->default()
+            ->font('Cabin')
             ->id('admin')
+            ->brandName('Lose ShoeCare')
+            ->defaultThemeMode(ThemeMode::Light)
             ->path('admin')
             ->viteTheme('resources/css/filament/admin/theme.css')
             ->login()

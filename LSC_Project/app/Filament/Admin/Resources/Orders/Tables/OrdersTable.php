@@ -1,46 +1,116 @@
 <?php
-namespace App\Filament\Admin\Resources\Users\Tables;
 
+namespace App\Filament\Admin\Resources\Orders\Tables;
+
+use App\Filament\Admin\Exports\OrderExporter;
+use Filament\Actions\ExportAction;
+use Filament\Forms\Components\DatePicker;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\Filter;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
-use Filament\Actions\ViewAction;
-use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Table;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\Exports\Enums\ExportFormat;
 
-class UsersTable
+class OrdersTable
 {
     public static function configure(Table $table): Table
     {
         return $table
             ->columns([
-                TextColumn::make('name')->searchable(),
-                TextColumn::make('email')
-                    ->label('Email address')
-                    ->searchable(),
-                TextColumn::make('email_verified_at')
-                    ->dateTime()
+                TextColumn::make('order_id')
+                    ->label('ID')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable(),
-                TextColumn::make('phone')->searchable(),
-                TextColumn::make('role')->searchable(),
-                TextColumn::make('created_at')
-                    ->dateTime()
+                TextColumn::make('user.name')
+                    ->label('Pelanggan')
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('updated_at')
-                    ->dateTime()
+                    ->searchable(),
+                TextColumn::make('jenis_sepatu')
+                    ->label('Jenis Sepatu')
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->searchable(),
+                TextColumn::make('order_date')
+                    ->label('Tanggal Order')
+                    ->date('d M Y')
+                    ->sortable(),
+                TextColumn::make('pickup_method')
+                    ->label('Metode')
+                    ->sortable()
+                    ->searchable(),
+                TextColumn::make('status')
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'pending' => 'warning',
+                        'diproses' => 'info',
+                        'selesai' => 'success',
+                        'dibatalkan' => 'danger',
+                        default => 'gray',
+                    }),
+                TextColumn::make('total_price')
+                    ->label('Total')
+                    ->money('IDR')
+                    ->sortable(),
             ])
-            ->filters([])
+            ->filters([
+                
+                Filter::make('order_date')
+                    ->form([
+                        DatePicker::make('created_from')->label('Dari Tanggal'),
+                        DatePicker::make('created_until')->label('Sampai Tanggal'),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when(
+                                $data['created_from'],
+                                fn (Builder $query, $date): Builder => $query->whereDate('order_date', '>=', $date),
+                            )
+                            ->when(
+                                $data['created_until'],
+                                fn (Builder $query, $date): Builder => $query->whereDate('order_date', '<=', $date),
+                            );
+                    })
+                    ->columnSpan(1),
+
+                
+                SelectFilter::make('service_id')
+                    ->label('Kategori Layanan')
+                    ->relationship('orderDetails.service', 'service_name')
+                    ->searchable()
+                    ->preload()
+                    ->columnSpan(1),
+
+                
+                SelectFilter::make('pickup_method')
+                    ->label('Metode Pengiriman')
+                    ->options([
+                        'pickup' => 'Pickup',
+                        'antar langsung' => 'Antar Langsung',
+                    ])
+                    ->columnSpan(1),
+            ])
+            ->filtersFormColumns(3)
+            ->headerActions([
+                ExportAction::make()
+                    ->exporter(OrderExporter::class)
+                    ->label('Export')
+                    ->formats([
+                        ExportFormat::Xlsx,
+                        ExportFormat::Csv,
+                    ])
+                    ->color('primary'),
+            ])
             ->recordActions([
-                ViewAction::make(),
                 EditAction::make(),
                 DeleteAction::make(),
+
             ])
             ->toolbarActions([
-                BulkActionGroup::make([
+                bulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),
             ]);
