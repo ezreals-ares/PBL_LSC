@@ -22,6 +22,10 @@ Route::get('/', function () {
 })->name('landing');
 
 Route::get('/dashboard', function () {
+    // Admins should use their own Filament panel
+    if (auth()->user()->role === 'admin') {
+        return redirect('/admin');
+    }
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
@@ -45,7 +49,7 @@ Route::middleware(['auth'])->group(function () {
     // Payment routes
     Route::get('/pembayaran/{order:order_id}', [PaymentController::class, 'show'])->name('payment.show');
     Route::post('/pembayaran/{order:order_id}', [PaymentController::class, 'store'])->name('payment.store');
-    Route::post('/pembayaran/{order:order_id}/upload', [PaymentController::class, 'upload'])->name('payment.upload');
+    Route::match(['post', 'put'], '/pembayaran/{order:order_id}/upload', [PaymentController::class, 'upload'])->name('payment.upload');
 
     // Review routes
     Route::get('/ulasan/{order:order_id}/buat', [ReviewController::class, 'create'])->name('review.create');
