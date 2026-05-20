@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use App\Models\OrderDetail;
+use App\Models\Outlet;
 use App\Models\Service;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -23,8 +24,9 @@ class OrderController extends Controller
         }
 
         $services = Service::orderBy('service_name')->get();
+        $outlets = Outlet::orderBy('outlet_name')->get();
 
-        return view('order.create', compact('services'));
+        return view('order.create', compact('services', 'outlets'));
     }
 
     /**
@@ -43,6 +45,7 @@ class OrderController extends Controller
             'quantities'       => 'required|array',
             'quantities.*'     => 'integer|min:1|max:99',
             'pickup_method'    => 'required|in:pickup,antar langsung',
+            'outlet_id'         => 'nullable|exists:outlets,outlet_id',
             'jenis_sepatu'     => 'nullable|string|max:100',
             'material_sepatu'  => 'nullable|string|max:100',
             'catatan'          => 'nullable|string|max:500',
@@ -80,9 +83,19 @@ class OrderController extends Controller
         }
 
         $estimatedFinish = Carbon::today()->addDays($maxDays)->toDateString();
+        $selectedOutlet = $request->filled('outlet_id')
+            ? Outlet::find($request->integer('outlet_id'))
+            : null;
+
+        $catatan = collect([
+            $request->catatan,
+            $selectedOutlet && $request->pickup_method === 'antar langsung'
+                ? 'Outlet pilihan: '.$selectedOutlet->outlet_name
+                : null,
+        ])->filter()->implode("\n");
 
         // Create the order inside a transaction for data integrity
-        $order = DB::transaction(function () use ($request, $totalPrice, $estimatedFinish, $orderDetails) {
+        $order = DB::transaction(function () use ($request, $totalPrice, $estimatedFinish, $orderDetails, $catatan) {
             $order = Order::create([
                 'user_id'          => auth()->id(),
                 'order_date'       => Carbon::today()->toDateString(),
@@ -92,7 +105,7 @@ class OrderController extends Controller
                 'total_price'      => $totalPrice,
                 'jenis_sepatu'     => $request->jenis_sepatu,
                 'material_sepatu'  => $request->material_sepatu,
-                'catatan'          => $request->catatan,
+                'catatan'          => $catatan ?: null,
             ]);
 
             foreach ($orderDetails as $detail) {

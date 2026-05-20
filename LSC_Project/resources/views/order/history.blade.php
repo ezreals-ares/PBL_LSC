@@ -2,337 +2,220 @@
 
 @section('title', 'Riwayat Pesanan')
 
-@section('extra-styles')
-<style>
-    .history-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 2rem;
-        width: 100%;
-    }
-    .history-header h1 {
-        font-size: 2rem;
-        font-weight: 800;
-        color: var(--text-dark);
-    }
-
-    /* Flash messages */
-    .flash-success {
-        background: #dcfce7;
-        border: 1px solid #bbf7d0;
-        color: #166534;
-        border-radius: 14px;
-        padding: 1rem 1.25rem;
-        margin-bottom: 1.5rem;
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-        font-weight: 600;
-    }
-    .flash-error {
-        background: #fee2e2;
-        border: 1px solid #fecaca;
-        color: #991b1b;
-        border-radius: 14px;
-        padding: 1rem 1.25rem;
-        margin-bottom: 1.5rem;
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-        font-weight: 600;
-    }
-
-    /* Empty state */
-    .empty-state {
-        text-align: center;
-        padding: 4rem 2rem;
-    }
-    .empty-icon {
-        width: 100px;
-        height: 100px;
-        margin: 0 auto 1.5rem;
-        color: var(--border);
-    }
-    .empty-state h2 { font-size: 1.4rem; color: var(--text-dark); margin-bottom: 0.5rem; }
-    .empty-state p  { color: var(--text-light); margin-bottom: 1.5rem; }
-
-    /* Order cards */
-    .order-card {
-        background: var(--white);
-        border-radius: 18px;
-        border: 1px solid var(--border);
-        padding: 1.5rem;
-        display: flex;
-        align-items: center;
-        gap: 1.5rem;
-        flex-wrap: wrap;
-        transition: all 0.25s ease;
-        margin-bottom: 1rem;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-    }
-    .order-card:hover {
-        border-color: var(--primary-light);
-        box-shadow: 0 6px 20px rgba(2,132,199,0.1);
-        transform: translateY(-2px);
-    }
-    .order-card-left {
-        flex: 0 0 auto;
-        min-width: 140px;
-    }
-    .order-card-id {
-        font-family: monospace;
-        font-size: 0.85rem;
-        color: var(--text-light);
-        margin-bottom: 0.25rem;
-        letter-spacing: 1px;
-    }
-    .order-card-date {
-        font-size: 0.8rem;
-        color: var(--text-light);
-        margin-bottom: 0.5rem;
-    }
-    .order-card-pickup {
-        font-size: 0.8rem;
-        color: var(--text-light);
-    }
-    .order-card-mid {
-        flex: 1;
-        min-width: 150px;
-    }
-    .order-card-services {
-        font-size: 0.9rem;
-        color: var(--text-dark);
-        font-weight: 600;
-        line-height: 1.5;
-    }
-    .order-card-right {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-end;
-        gap: 0.5rem;
-        min-width: 140px;
-    }
-    .order-card-price {
-        font-size: 1.05rem;
-        font-weight: 800;
-        color: var(--primary-light);
-    }
-
-    /* ── Stepper Mini (Visual Progress) ── */
-    .stepper-wrap {
-        display: flex;
-        align-items: flex-start;
-        justify-content: space-between;
-        gap: 0;
-        margin-top: 1rem;
-        padding: 1rem;
-        background: linear-gradient(135deg, #f8fafc, #f1f5f9);
-        border-radius: 14px;
-        border: 1px solid var(--border);
-        width: 100%;
-        flex: 1 1 100%;
-    }
-    .step-item {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 0.5rem;
-        flex: 1;
-        position: relative;
-    }
-    .step-item:not(:last-child)::after {
-        content: '';
-        position: absolute;
-        top: 16px; /* Center of 32px circle */
-        left: calc(50% + 16px);
-        width: calc(100% - 32px);
-        height: 3px;
-        background: var(--border);
-        z-index: 0;
-        border-radius: 2px;
-    }
-    .step-item.done:not(:last-child)::after {
-        background: linear-gradient(90deg, var(--primary), var(--primary-light));
-    }
-    .step-circle {
-        width: 32px;
-        height: 32px;
-        border-radius: 50%;
-        background: var(--white);
-        border: 2px solid var(--border);
-        color: var(--text-light);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: 800;
-        font-size: 0.85rem;
-        position: relative;
-        z-index: 1;
-        transition: all 0.3s;
-    }
-    .step-item.done .step-circle {
-        background: linear-gradient(135deg, var(--primary), var(--primary-light));
-        border-color: var(--primary);
-        color: white;
-    }
-    .step-item.current .step-circle {
-        background: var(--primary);
-        border-color: var(--primary-light);
-        color: white;
-        box-shadow: 0 0 0 4px rgba(2, 132, 199, 0.2);
-        animation: pulse-ring-mini 2s infinite;
-    }
-    .step-item.cancelled .step-circle {
-        background: #ef4444;
-        border-color: #fca5a5;
-        color: white;
-    }
-    @keyframes pulse-ring-mini {
-        0%   { box-shadow: 0 0 0 0 rgba(2, 132, 199, 0.4); }
-        70%  { box-shadow: 0 0 0 8px rgba(2, 132, 199, 0); }
-        100% { box-shadow: 0 0 0 0 rgba(2, 132, 199, 0); }
-    }
-    .step-label {
-        font-size: 0.75rem;
-        color: var(--text-light);
-        text-align: center;
-        font-weight: 700;
-        transition: all 0.2s;
-    }
-    .step-item.done .step-label { color: var(--text-dark); }
-    .step-item.current .step-label { color: var(--primary); font-size: 0.8rem; }
-    .step-item.cancelled .step-label { color: #ef4444; }
-</style>
-@endsection
-
 @section('content')
 
-<div class="history-header" style="margin-bottom: 2rem;">
-    <h1>Riwayat Pesanan Saya</h1>
-    <a href="{{ route('order.create') }}" class="btn btn-primary" style="margin-left:auto;">
-        <i class="fas fa-plus"></i> Buat Pesanan
+{{-- ── Header ──────────────────────────────────────────────────── --}}
+<header class="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
+    <div>
+        <h1 class="font-grotesk font-black uppercase tracking-tighter" style="font-size: clamp(1.8rem, 4vw, 2.8rem);">
+            Riwayat Pesanan
+        </h1>
+        <p class="text-on-surface-variant text-base mt-1">Pantau status dan progres semua pesananmu.</p>
+    </div>
+    <a href="{{ route('order.create') }}" class="neo-btn-primary py-3 px-6 shrink-0">
+        <span class="material-symbols-outlined text-sm">add_circle</span>
+        Pesan Baru
     </a>
-</div>
+</header>
 
-@if(session('success'))
-    <div class="flash-success">
-        <i class="fas fa-circle-check"></i> {{ session('success') }}
-    </div>
-@endif
-@if(session('error'))
-    <div class="flash-error">
-        <i class="fas fa-circle-xmark"></i> {{ session('error') }}
-    </div>
-@endif
+@if($orders->count() > 0)
 
-@if($orders->isEmpty())
-    {{-- Empty state --}}
-    <div class="card empty-state">
-        <svg class="empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <path stroke-linecap="round" stroke-linejoin="round"
-                d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0H4m8-7v7"/>
-        </svg>
-        <h2>Belum ada pesanan</h2>
-        <p>Anda belum pernah membuat pesanan. Yuk, coba layanan premium kami!</p>
-        <a href="{{ route('order.create') }}" class="btn btn-primary">
-            Buat Pesanan Pertama →
+    {{-- ── Order Table / Cards ─────────────────────────────────── --}}
+    {{-- Desktop Table --}}
+    <div class="neo-card bg-surface overflow-hidden hidden md:block">
+        <div class="p-6 border-b-[3px] border-stroke bg-surface-variant flex justify-between items-center">
+            <h2 class="font-grotesk font-bold text-on-surface uppercase text-xl">Semua Pesanan</h2>
+            <span class="bg-secondary-container border-[2px] border-stroke px-3 py-1 font-label-md text-on-secondary-container font-bold text-xs uppercase">
+                {{ $orders->count() }} PESANAN
+            </span>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-white border-b-[3px] border-stroke">
+                        <th class="p-5 font-grotesk font-bold uppercase text-sm text-on-surface">Tanggal</th>
+                        <th class="p-5 font-grotesk font-bold uppercase text-sm text-on-surface">Layanan</th>
+                        <th class="p-5 font-grotesk font-bold uppercase text-sm text-on-surface">Total</th>
+                        <th class="p-5 font-grotesk font-bold uppercase text-sm text-on-surface">Status</th>
+                        <th class="p-5 font-grotesk font-bold uppercase text-sm text-on-surface">Bayar</th>
+                        <th class="p-5 font-grotesk font-bold uppercase text-sm text-on-surface">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y-[2px] divide-stroke">
+                    @foreach($orders as $order)
+                        @php
+                            $statusBadge = [
+                                'pending'    => 'badge-pending',
+                                'diproses'   => 'badge-diproses',
+                                'selesai'    => 'badge-selesai',
+                                'dibatalkan' => 'badge-dibatalkan',
+                            ][$order->status] ?? 'badge-pending';
+                            $statusLabel = [
+                                'pending'    => 'Menunggu',
+                                'diproses'   => 'Diproses',
+                                'selesai'    => 'Selesai',
+                                'dibatalkan' => 'Dibatalkan',
+                            ][$order->status] ?? $order->status;
+                            $payBadge = match($order->payment?->status ?? 'none') {
+                                'verified'   => 'badge-pay-verified',
+                                'unverified' => 'badge-pay-unverified',
+                                'rejected'   => 'badge-pay-rejected',
+                                default      => '',
+                            };
+                            $payLabel = match($order->payment?->status ?? 'none') {
+                                'verified'   => 'Terverifikasi',
+                                'unverified' => 'Menunggu',
+                                'rejected'   => 'Ditolak',
+                                default      => '—',
+                            };
+                        @endphp
+                        <tr class="hover:bg-surface-container-low transition-colors">
+                            <td class="p-5 text-sm text-on-surface">
+                                <div>{{ \Carbon\Carbon::parse($order->order_date)->format('d M Y') }}</div>
+                                <div class="text-xs text-on-surface-variant">#{{ $order->order_id }}</div>
+                            </td>
+                            <td class="p-5">
+                                <div class="flex items-center gap-3">
+                                    <span class="material-symbols-outlined text-primary text-lg" style="font-variation-settings:'FILL' 1">cleaning_services</span>
+                                    <div>
+                                        <p class="font-bold text-sm text-on-surface">
+                                            {{ $order->orderDetails->first()?->service?->service_name ?? 'Layanan' }}
+                                        </p>
+                                        @if($order->jenis_sepatu)
+                                            <p class="text-xs text-on-surface-variant">{{ $order->jenis_sepatu }}</p>
+                                        @endif
+                                        @if($order->orderDetails->count() > 1)
+                                            <p class="text-xs text-on-surface-variant">+{{ $order->orderDetails->count() - 1 }} layanan lain</p>
+                                        @endif
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="p-5 font-grotesk font-black text-on-surface">
+                                Rp {{ number_format($order->total_price, 0, ',', '.') }}
+                            </td>
+                            <td class="p-5">
+                                <span class="{{ $statusBadge }}">{{ $statusLabel }}</span>
+                            </td>
+                            <td class="p-5">
+                                @if($payBadge)
+                                    <span class="{{ $payBadge }}">{{ $payLabel }}</span>
+                                @else
+                                    <span class="text-xs text-on-surface-variant">—</span>
+                                @endif
+                            </td>
+                            <td class="p-5">
+                                <div class="flex items-center gap-2 flex-wrap">
+                                    <a href="{{ route('order.show', $order->order_id) }}"
+                                       class="bg-white border-[2px] border-stroke px-3 py-1.5 text-xs font-bold uppercase text-on-surface hover:bg-secondary-container transition-colors neo-shadow-xs">
+                                        Detail
+                                    </a>
+
+                                    {{-- Pay --}}
+                                    @if($order->status !== 'dibatalkan')
+                                        @if(!$order->payment)
+                                            <a href="{{ route('payment.show', $order->order_id) }}"
+                                               class="border-[2px] border-stroke px-3 py-1.5 text-xs font-bold uppercase hover:opacity-80 neo-shadow-xs"
+                                               style="background-color:#0058be; color:#fff;">
+                                                Bayar
+                                            </a>
+                                        @elseif($order->payment->status === 'unverified')
+                                            <a href="{{ route('payment.show', $order->order_id) }}"
+                                               class="bg-secondary-container text-on-secondary-container border-[2px] border-stroke px-3 py-1.5 text-xs font-bold uppercase hover:opacity-80 neo-shadow-xs">
+                                                Ganti Bukti
+                                            </a>
+                                        @endif
+                                    @endif
+
+                                    {{-- Review --}}
+                                    @if($order->status === 'selesai')
+                                        @if(!$order->review)
+                                            <a href="{{ route('review.create', $order->order_id) }}"
+                                               class="bg-success text-white border-[2px] border-stroke px-3 py-1.5 text-xs font-bold uppercase hover:opacity-80 neo-shadow-xs">
+                                                Ulasan
+                                            </a>
+                                        @else
+                                            <a href="{{ route('review.edit', $order->order_id) }}"
+                                               class="bg-surface-container text-on-surface border-[2px] border-stroke px-3 py-1.5 text-xs font-bold uppercase hover:bg-secondary-container transition-colors neo-shadow-xs">
+                                                Edit Ulasan
+                                            </a>
+                                        @endif
+                                    @endif
+
+                                    {{-- Cancel --}}
+                                    @if($order->status === 'pending')
+                                        <form method="POST" action="{{ route('order.cancel', $order->order_id) }}"
+                                              onsubmit="return confirm('Yakin ingin membatalkan pesanan ini?')">
+                                            @csrf @method('DELETE')
+                                            <button type="submit"
+                                                class="border-[2px] border-stroke px-3 py-1.5 text-xs font-bold uppercase hover:opacity-80 neo-shadow-xs cursor-pointer"
+                                                style="background-color:#EF4444; color:#fff;">
+                                                Batal
+                                            </button>
+                                        </form>
+                                    @endif
+                                </div>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    {{-- Mobile Cards --}}
+    <div class="md:hidden space-y-4">
+        @foreach($orders as $order)
+            @php
+                $statusBadge = ['pending'=>'badge-pending','diproses'=>'badge-diproses','selesai'=>'badge-selesai','dibatalkan'=>'badge-dibatalkan'][$order->status] ?? 'badge-pending';
+                $statusLabel = ['pending'=>'Menunggu','diproses'=>'Diproses','selesai'=>'Selesai','dibatalkan'=>'Dibatalkan'][$order->status] ?? $order->status;
+            @endphp
+            <div class="neo-card bg-white p-5">
+                <div class="flex justify-between items-start mb-4">
+                    <div>
+                        <p class="font-grotesk font-bold text-xs text-on-surface-variant uppercase mb-0.5">#{{ $order->order_id }}</p>
+                        <p class="font-grotesk font-bold text-on-surface">{{ $order->orderDetails->first()?->service?->service_name ?? 'Layanan' }}</p>
+                        @if($order->jenis_sepatu)
+                            <p class="text-xs text-on-surface-variant">{{ $order->jenis_sepatu }}</p>
+                        @endif
+                    </div>
+                    <span class="{{ $statusBadge }}">{{ $statusLabel }}</span>
+                </div>
+                <div class="flex justify-between items-center border-t-[2px] border-stroke pt-4">
+                    <div>
+                        <p class="text-xs text-on-surface-variant">{{ \Carbon\Carbon::parse($order->order_date)->format('d M Y') }}</p>
+                        <p class="font-grotesk font-black text-on-surface">Rp {{ number_format($order->total_price, 0, ',', '.') }}</p>
+                    </div>
+                    <div class="flex gap-2 flex-wrap justify-end">
+                        <a href="{{ route('order.show', $order->order_id) }}"
+                           class="bg-white border-[2px] border-stroke px-3 py-1.5 text-xs font-bold uppercase hover:bg-secondary-container neo-shadow-xs">Detail</a>
+                        @if($order->status !== 'dibatalkan' && !$order->payment)
+                            <a href="{{ route('payment.show', $order->order_id) }}"
+                               class="border-[2px] border-stroke px-3 py-1.5 text-xs font-bold uppercase neo-shadow-xs"
+                               style="background-color:#0058be; color:#fff;">Bayar</a>
+                        @endif
+                        @if($order->status === 'selesai' && !$order->review)
+                            <a href="{{ route('review.create', $order->order_id) }}"
+                               class="bg-success text-white border-[2px] border-stroke px-3 py-1.5 text-xs font-bold uppercase neo-shadow-xs">Ulasan</a>
+                        @endif
+                    </div>
+                </div>
+            </div>
+        @endforeach
+    </div>
+
+@else
+
+    {{-- Empty State --}}
+    <div class="neo-card bg-surface p-16 text-center">
+        <span class="material-symbols-outlined text-8xl text-outline mb-6 block" style="font-variation-settings:'FILL' 1">cleaning_services</span>
+        <h2 class="font-grotesk font-black uppercase text-2xl text-on-surface mb-2">Belum Ada Pesanan</h2>
+        <p class="text-on-surface-variant mb-8">Mulai perjalanan sneakermu dengan pesan layanan pertamamu!</p>
+        <a href="{{ route('order.create') }}" class="neo-btn-primary py-4 px-8 text-base">
+            <span class="material-symbols-outlined">add_circle</span>
+            Pesan Sekarang
         </a>
     </div>
-@else
-    @foreach($orders as $order)
-    <div class="order-card">
-        {{-- Left: ID + date + pickup --}}
-        <div class="order-card-left">
-            <div class="order-card-id">
-                #{{ strtoupper(substr(str_pad($order->order_id, 8, '0', STR_PAD_LEFT), -8)) }}
-            </div>
-            <div class="order-card-date">
-                {{ \Carbon\Carbon::parse($order->order_date)->translatedFormat('d F Y') }}
-            </div>
-            <div class="order-card-pickup">
-                @if($order->pickup_method === 'pickup')
-                    <i class="fas fa-car" style="color:var(--primary);"></i> Jemput
-                @else
-                    <i class="fas fa-store" style="color:var(--primary);"></i> Antar Langsung
-                @endif
-            </div>
-        </div>
 
-        {{-- Mid: services --}}
-        <div class="order-card-mid">
-            <div class="order-card-services">
-                @php
-                    $serviceNames = $order->orderDetails
-                        ->map(fn($d) => $d->service ? $d->service->service_name : '—')
-                        ->join(', ');
-                @endphp
-                {{ $serviceNames ?: '—' }}
-            </div>
-        </div>
-
-        {{-- Right: price + action --}}
-        <div class="order-card-right">
-            <span class="order-card-price">
-                Rp {{ number_format($order->total_price, 0, ',', '.') }}
-            </span>
-            <a href="{{ route('order.show', $order->order_id) }}" class="btn btn-outline btn-sm">
-                Lihat Detail
-            </a>
-        </div>
-
-        {{-- Bottom: Visual Progress --}}
-        @php
-            $statusFlow = ['pending', 'diproses', 'selesai'];
-            $currentStatus = $order->status;
-            $isCancelled = $currentStatus === 'dibatalkan';
-
-            $stepLabels = [
-                'pending'   => 'Menunggu',
-                'diproses'  => 'Diproses',
-                'selesai'   => 'Selesai',
-                'dibatalkan'=> 'Dibatalkan',
-            ];
-            $currentIndex = array_search($currentStatus, $statusFlow);
-        @endphp
-        <div class="stepper-wrap">
-            @if(!$isCancelled)
-                @foreach($statusFlow as $i => $step)
-                    @php
-                        $stepIndex = array_search($step, $statusFlow);
-                        if ($currentIndex === false) $cls = 'future';
-                        elseif ($stepIndex < $currentIndex) $cls = 'done';
-                        elseif ($stepIndex === $currentIndex) $cls = 'current';
-                        else $cls = 'future';
-                    @endphp
-                    <div class="step-item {{ $cls }}">
-                        <div class="step-circle">
-                            @if($cls === 'done')
-                                <i class="fas fa-check" style="font-size:0.7rem;"></i>
-                            @elseif($cls === 'current')
-                                <i class="fas fa-circle-dot" style="font-size:0.75rem;"></i>
-                            @else
-                                {{ $i + 1 }}
-                            @endif
-                        </div>
-                        <span class="step-label">{{ $stepLabels[$step] }}</span>
-                    </div>
-                @endforeach
-            @else
-                @foreach(['pending', 'diproses'] as $i => $step)
-                    <div class="step-item future">
-                        <div class="step-circle">{{ $i + 1 }}</div>
-                        <span class="step-label">{{ $stepLabels[$step] }}</span>
-                    </div>
-                @endforeach
-                <div class="step-item cancelled">
-                    <div class="step-circle"><i class="fas fa-ban" style="font-size:0.7rem;"></i></div>
-                    <span class="step-label">Dibatalkan</span>
-                </div>
-            @endif
-        </div>
-    </div>
-    @endforeach
 @endif
 
 @endsection
