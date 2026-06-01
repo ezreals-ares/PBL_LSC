@@ -14,20 +14,25 @@ class ServiceForm
         return $schema
             ->components([
                 TextInput::make('service_name')
+                    ->label('Nama Layanan')
                     ->required(),
                 TextInput::make('price')
+                    ->label('Harga')
                     ->required()
                     ->numeric()
                     ->prefix('Rp'),
                 TextInput::make('estimated_days')
+                    ->label('Estimasi Hari')
                     ->required()
                     ->numeric(),
                 FileUpload::make('gambar')
+                    ->label('Gambar Layanan')
                     ->image()
                     ->disk('public')
                     ->fetchFileInformation(false)
                     ->directory('service_photos'),
                 Textarea::make('description')
+                    ->label('Deskripsi')
                     ->columnSpanFull(),
             ]);
     }
