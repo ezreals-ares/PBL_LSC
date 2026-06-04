@@ -24,7 +24,7 @@
 <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
 
     {{-- ── Left: Timeline ──────────────────────────────────────── --}}
-    <section class="lg:col-span-8 space-y-6">
+    <section class="lg:col-span-8 spacek-y-6">
 
         {{-- Progress Timeline --}}
         @php

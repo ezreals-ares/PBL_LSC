@@ -15,22 +15,25 @@
 </header>
 
 @if(session('status') === 'profile-updated')
-    <div class="mb-6 bg-success text-white px-5 py-4 font-bold border-[3px] border-stroke neo-shadow-sm flex items-center gap-3">
-        <span class="material-symbols-outlined">check_circle</span>
+    <div class="mb-6 text-white px-5 py-4 font-bold border-[3px] border-stroke flex items-center gap-3"
+         style="background-color:#16a34a; box-shadow:4px 4px 0px #000;">
+        <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1">check_circle</span>
         Profil berhasil diperbarui.
     </div>
 @endif
 
 @if(session('status') === 'avatar-updated')
-    <div class="mb-6 bg-success text-white px-5 py-4 font-bold border-[3px] border-stroke neo-shadow-sm flex items-center gap-3">
-        <span class="material-symbols-outlined">check_circle</span>
+    <div class="mb-6 text-white px-5 py-4 font-bold border-[3px] border-stroke flex items-center gap-3"
+         style="background-color:#16a34a; box-shadow:4px 4px 0px #000;">
+        <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1">check_circle</span>
         Foto profil berhasil diperbarui.
     </div>
 @endif
 
 @if(session('status') === 'password-updated')
-    <div class="mb-6 bg-success text-white px-5 py-4 font-bold border-[3px] border-stroke neo-shadow-sm flex items-center gap-3">
-        <span class="material-symbols-outlined">check_circle</span>
+    <div class="mb-6 text-white px-5 py-4 font-bold border-[3px] border-stroke flex items-center gap-3"
+         style="background-color:#16a34a; box-shadow:4px 4px 0px #000;">
+        <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1">check_circle</span>
         Kata sandi berhasil diperbarui.
     </div>
 @endif
@@ -81,9 +84,14 @@
                      id="avatar-preview"
                      class="w-24 h-24 rounded-full object-cover border-[3px] border-stroke">
             @else
+                {{-- Placeholder anonim --}}
                 <div id="avatar-preview-placeholder"
-                     class="w-24 h-24 rounded-full bg-primary border-[3px] border-stroke flex items-center justify-center text-white font-grotesk font-black text-3xl">
-                    {{ strtoupper(substr($user->name, 0, 1)) }}
+                     class="w-24 h-24 rounded-full border-[3px] border-stroke overflow-hidden flex items-end justify-center"
+                     style="background-color: #e2e8f0;">
+                    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" class="w-20 h-20" style="color:#94a3b8;">
+                        <circle cx="50" cy="36" r="20" fill="currentColor"/>
+                        <ellipse cx="50" cy="85" rx="34" ry="22" fill="currentColor"/>
+                    </svg>
                 </div>
             @endif
         </div>

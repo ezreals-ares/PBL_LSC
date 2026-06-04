@@ -22,11 +22,10 @@ Route::get('/', function () {
 })->name('landing');
 
 Route::get('/dashboard', function () {
-    // Admins should use their own Filament panel
     if (auth()->user()->role === 'admin') {
         return redirect('/admin');
     }
-    return view('dashboard');
+    return redirect()->route('order.history');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 // Profile management (Breeze)
