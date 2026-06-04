@@ -1,6 +1,6 @@
 @extends('layouts.customer')
 
-@section('title', 'Detail Pesanan #' . $order->order_id)
+@section('title', 'Detail Pesanan')
 
 @section('content')
 
@@ -16,7 +16,7 @@
         Kembali
     </a>
     <h1 class="font-grotesk font-black uppercase tracking-tighter" style="font-size: clamp(1.5rem, 4vw, 2.5rem);">
-        Pesanan #{{ $order->order_id }}
+        Detail Pesanan
     </h1>
     <p class="text-on-surface-variant mt-1">{{ $order->jenis_sepatu ? 'Sepatu: '.$order->jenis_sepatu : 'Lihat progres pesananmu.' }}</p>
 </div>
@@ -224,10 +224,10 @@
                 <div class="space-y-3">
                     <div class="flex justify-between items-center p-3 {{ $order->payment->status === 'verified' ? 'bg-success' : ($order->payment->status === 'rejected' ? 'bg-error-container' : 'bg-secondary-container') }} border-[3px] border-stroke">
                         <div class="flex items-center gap-2">
-                            <span class="material-symbols-outlined {{ $order->payment->status === 'verified' ? 'text-white' : 'text-on-secondary-container' }}" style="font-variation-settings:'FILL' 1">
+                            <span class="material-symbols-outlined text-black" style="font-variation-settings:'FILL' 1">
                                 {{ $order->payment->status === 'verified' ? 'verified' : 'pending' }}
                             </span>
-                            <span class="font-bold text-sm uppercase {{ $order->payment->status === 'verified' ? 'text-white' : 'text-on-secondary-container' }}">
+                            <span class="font-bold text-sm uppercase text-black">
                                 {{ ['verified'=>'Terverifikasi','unverified'=>'Menunggu Verifikasi','rejected'=>'Ditolak'][$order->payment->status] ?? $order->payment->status }}
                             </span>
                         </div>
@@ -255,7 +255,7 @@
                         <p class="text-sm text-on-surface-variant mb-4">Belum ada pembayaran.</p>
                         <a href="{{ route('payment.show', $order->order_id) }}" class="neo-btn-primary w-full justify-center text-sm">
                             <span class="material-symbols-outlined text-sm">upload</span>
-                            Upload Bukti Bayar
+                            Unggah Bukti Bayar
                         </a>
                     </div>
                 @else

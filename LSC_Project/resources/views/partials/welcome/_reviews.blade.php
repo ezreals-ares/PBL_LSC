@@ -16,6 +16,16 @@
                         <span class="ml-auto font-grotesk font-black text-sm text-on-surface-variant">{{ $review->rating }}/5</span>
                     </div>
 
+                    {{-- Foto Review --}}
+                    @if($review->photo)
+                        <div class="mb-4 border-[2px] border-stroke overflow-hidden">
+                            <img src="{{ asset('storage/' . $review->photo) }}"
+                                 alt="Foto ulasan"
+                                 class="w-full h-48 object-cover cursor-pointer hover:opacity-90 transition-opacity"
+                                 onclick="openLightbox(this.src)">
+                        </div>
+                    @endif
+
                     {{-- Comment --}}
                     <p class="text-sm text-on-surface leading-relaxed mb-6 flex-grow">
                         "{{ $review->comment }}"
@@ -23,9 +33,16 @@
 
                     {{-- Author --}}
                     <div class="flex items-center gap-3 border-t-[2px] border-stroke pt-4 mt-auto">
-                        <div class="w-10 h-10 bg-primary border-[2px] border-stroke flex items-center justify-center text-white font-grotesk font-black text-sm">
-                            {{ strtoupper(substr($review->user->name ?? 'U', 0, 1)) }}
-                        </div>
+                        {{-- Avatar: foto jika ada, inisial jika tidak --}}
+                        @if($review->user && $review->user->getAvatarUrl())
+                            <img src="{{ $review->user->getAvatarUrl() }}"
+                                 alt="{{ $review->user->name }}"
+                                 class="w-10 h-10 rounded-full object-cover border-[2px] border-stroke shrink-0">
+                        @else
+                            <div class="w-10 h-10 bg-primary border-[2px] border-stroke rounded-full flex items-center justify-center text-white font-grotesk font-black text-sm shrink-0">
+                                {{ strtoupper(substr($review->user->name ?? 'U', 0, 1)) }}
+                            </div>
+                        @endif
                         <div>
                             <p class="font-grotesk font-bold text-sm text-on-surface">{{ $review->user->name ?? 'Customer' }}</p>
                             <p class="text-xs text-on-surface-variant">{{ $review->created_at->diffForHumans() }}</p>
@@ -78,3 +95,34 @@
         @endif
     @endauth
 </section>
+
+{{-- ── Lightbox Modal ────────────────────────────────────────────── --}}
+<div id="review-lightbox"
+     class="fixed inset-0 z-[9999] hidden items-center justify-center"
+     style="background:rgba(0,0,0,0.88);"
+     onclick="closeLightbox()">
+    <button class="absolute top-5 right-5 text-white cursor-pointer"
+            onclick="closeLightbox()">
+        <span class="material-symbols-outlined text-4xl">close</span>
+    </button>
+    <img id="lightbox-img" src="" alt="Foto ulasan"
+         class="max-w-[90vw] max-h-[90vh] object-contain border-[3px] border-white"
+         onclick="event.stopPropagation()">
+</div>
+
+<script>
+function openLightbox(src) {
+    const lb = document.getElementById('review-lightbox');
+    document.getElementById('lightbox-img').src = src;
+    lb.classList.remove('hidden');
+    lb.classList.add('flex');
+    document.body.style.overflow = 'hidden';
+}
+function closeLightbox() {
+    const lb = document.getElementById('review-lightbox');
+    lb.classList.add('hidden');
+    lb.classList.remove('flex');
+    document.body.style.overflow = '';
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+</script>

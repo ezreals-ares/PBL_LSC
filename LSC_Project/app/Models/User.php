@@ -46,7 +46,28 @@ class User extends Authenticatable implements FilamentUser
         'phone',
         'address',
         'role',
+        'google_id',
+        'avatar',
     ];
+
+    /**
+     * Mengembalikan URL avatar:
+     * - Jika user Google: URL langsung dari Google
+     * - Jika upload lokal: asset storage
+     * - Jika tidak ada: null (tampilkan inisial nama)
+     */
+    public function getAvatarUrl(): ?string
+    {
+        if (!$this->avatar) return null;
+
+        // Avatar dari Google adalah URL lengkap
+        if (str_starts_with($this->avatar, 'http')) {
+            return $this->avatar;
+        }
+
+        // Avatar lokal tersimpan di storage
+        return asset('storage/' . $this->avatar);
+    }
 
     /**
      * The attributes that should be hidden for serialization.

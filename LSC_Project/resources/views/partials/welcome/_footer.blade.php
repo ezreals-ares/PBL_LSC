@@ -8,7 +8,7 @@
                 <div>
                     <h3 class="font-grotesk font-black text-black text-xl md:text-2xl mb-6 uppercase tracking-tight">Lose Shoescare</h3>
                     <p class="text-[#4b4d52] text-[15px] leading-relaxed mb-8 max-w-sm">
-                        The world's first neo-brutalist sneaker maintenance facility. We treat every pair like a masterpiece, keeping your collection immortal.
+                        Solusi perawatan sneaker terpercaya untuk menjaga koleksi sepatumu selalu bersih dan terawat.
                     </p>
                     <div class="flex gap-3 mb-12">
                         {{-- Discord / Forum --}}
@@ -26,65 +26,48 @@
                     </div>
                 </div>
                 <div class="text-[11px] md:text-xs font-bold text-[#4b4d52] uppercase tracking-widest hidden lg:block">
-                    © {{ date('Y') }} LOSE SHOESCARE. KEEP 'EM FRESH.
+                    © {{ date('Y') }} LOSE SHOESCARE. JAGA SEPATUMU TETAP BERSIH.
                 </div>
             </div>
 
-            {{-- Links section (Col-span-5) --}}
-            <div class="md:col-span-12 lg:col-span-5 grid grid-cols-2 sm:grid-cols-3 gap-8">
+            {{-- Links section (Col-span-8) --}}
+            <div class="md:col-span-12 lg:col-span-8 grid grid-cols-2 sm:grid-cols-3 gap-8">
                 
                 {{-- Services --}}
                 <div>
-                    <h4 class="font-grotesk font-black text-black uppercase text-lg mb-6 tracking-tight">Services</h4>
+                    <h4 class="font-grotesk font-black text-black uppercase text-lg mb-6 tracking-tight">Layanan</h4>
                     <ul class="space-y-4">
-                        <li><a href="#layanan" class="text-[15px] font-medium text-[#4b4d52] hover:text-black hover:underline underline-offset-4 decoration-2 transition-all">Deep Clean</a></li>
-                        <li><a href="#layanan" class="text-[15px] font-medium text-[#4b4d52] hover:text-black hover:underline underline-offset-4 decoration-2 transition-all">Restoration</a></li>
-                        <li><a href="#layanan" class="text-[15px] font-medium text-[#4b4d52] hover:text-black hover:underline underline-offset-4 decoration-2 transition-all">Repainting</a></li>
-                        <li><a href="#layanan" class="text-[15px] font-medium text-[#4b4d52] hover:text-black hover:underline underline-offset-4 decoration-2 transition-all">Deodorization</a></li>
+                        <li><a href="#layanan" class="text-[15px] font-medium text-[#4b4d52] hover:text-black hover:underline underline-offset-4 decoration-2 transition-all">Cuci Dalam</a></li>
+                        <li><a href="#layanan" class="text-[15px] font-medium text-[#4b4d52] hover:text-black hover:underline underline-offset-4 decoration-2 transition-all">Restorasi</a></li>
+                        <li><a href="#layanan" class="text-[15px] font-medium text-[#4b4d52] hover:text-black hover:underline underline-offset-4 decoration-2 transition-all">Pewarnaan Ulang</a></li>
+                        <li><a href="#layanan" class="text-[15px] font-medium text-[#4b4d52] hover:text-black hover:underline underline-offset-4 decoration-2 transition-all">Penghilang Bau</a></li>
                     </ul>
                 </div>
 
                 {{-- Company --}}
                 <div>
-                    <h4 class="font-grotesk font-black text-black uppercase text-lg mb-6 tracking-tight">Company</h4>
+                    <h4 class="font-grotesk font-black text-black uppercase text-lg mb-6 tracking-tight">Perusahaan</h4>
                     <ul class="space-y-4">
-                        <li><a href="#" class="text-[15px] font-medium text-[#4b4d52] hover:text-black hover:underline underline-offset-4 decoration-2 transition-all">About Us</a></li>
-                        <li><a href="#lokasi" class="text-[15px] font-medium text-[#4b4d52] hover:text-black hover:underline underline-offset-4 decoration-2 transition-all">Locations</a></li>
-                        <li><a href="#" class="text-[15px] font-medium text-[#4b4d52] hover:text-black hover:underline underline-offset-4 decoration-2 transition-all">Sustainability</a></li>
-                        <li><a href="#" class="text-[15px] font-medium text-[#4b4d52] hover:text-black hover:underline underline-offset-4 decoration-2 transition-all">Careers</a></li>
+                        <li><a href="#" class="text-[15px] font-medium text-[#4b4d52] hover:text-black hover:underline underline-offset-4 decoration-2 transition-all">Tentang Kami</a></li>
+                        <li><a href="#lokasi" class="text-[15px] font-medium text-[#4b4d52] hover:text-black hover:underline underline-offset-4 decoration-2 transition-all">Lokasi</a></li>
+                        <li><a href="#" class="text-[15px] font-medium text-[#4b4d52] hover:text-black hover:underline underline-offset-4 decoration-2 transition-all">Keberlanjutan</a></li>
+                        <li><a href="#" class="text-[15px] font-medium text-[#4b4d52] hover:text-black hover:underline underline-offset-4 decoration-2 transition-all">Karir</a></li>
                     </ul>
                 </div>
 
                 {{-- Support --}}
                 <div>
-                    <h4 class="font-grotesk font-black text-black uppercase text-lg mb-6 tracking-tight">Support</h4>
+                    <h4 class="font-grotesk font-black text-black uppercase text-lg mb-6 tracking-tight">Dukungan</h4>
                     <ul class="space-y-4">
-                        <li><a href="#" class="text-[15px] font-medium text-[#4b4d52] hover:text-black hover:underline underline-offset-4 decoration-2 transition-all">Pricing</a></li>
-                        <li><a href="#" class="text-[15px] font-medium text-[#4b4d52] hover:text-black hover:underline underline-offset-4 decoration-2 transition-all">Privacy Policy</a></li>
-                        <li><a href="#" class="text-[15px] font-medium text-[#4b4d52] hover:text-black hover:underline underline-offset-4 decoration-2 transition-all">Terms of Service</a></li>
-                        <li><a href="#" class="text-[15px] font-medium text-[#4b4d52] hover:text-black hover:underline underline-offset-4 decoration-2 transition-all">Contact Support</a></li>
+                        <li><a href="#" class="text-[15px] font-medium text-[#4b4d52] hover:text-black hover:underline underline-offset-4 decoration-2 transition-all">Harga</a></li>
+                        <li><a href="#" class="text-[15px] font-medium text-[#4b4d52] hover:text-black hover:underline underline-offset-4 decoration-2 transition-all">Kebijakan Privasi</a></li>
+                        <li><a href="#" class="text-[15px] font-medium text-[#4b4d52] hover:text-black hover:underline underline-offset-4 decoration-2 transition-all">Syarat & Ketentuan</a></li>
+                        <li><a href="#" class="text-[15px] font-medium text-[#4b4d52] hover:text-black hover:underline underline-offset-4 decoration-2 transition-all">Hubungi Kami</a></li>
                     </ul>
                 </div>
 
             </div>
 
-            {{-- Newsletter (Col-span-3) --}}
-            <div class="md:col-span-12 lg:col-span-3">
-                <h4 class="font-grotesk font-black text-black uppercase text-lg mb-6 tracking-tight">Newsletter</h4>
-                <p class="text-xs font-bold text-[#4b4d52] uppercase tracking-wider mb-4">
-                    Get Maintenance Tips
-                </p>
-                <form class="flex flex-col gap-4">
-                    <input type="email" placeholder="EMAIL ADDRESS" class="w-full h-12 px-4 bg-white border-[3px] border-black text-[13px] font-bold text-black uppercase placeholder-[#888] focus:outline-none focus:ring-0 shadow-[4px_4px_0_0_#000] transition-shadow">
-                    <button type="button" class="w-full h-12 bg-[#0058be] text-white border-[3px] border-black font-bold uppercase text-[13px] tracking-widest flex justify-center items-center gap-2 hover:bg-[#004ca3] active:translate-y-[2px] active:translate-x-[2px] shadow-[4px_4px_0_0_#000] active:shadow-[2px_2px_0_0_#000] transition-all">
-                        Join <span class="material-symbols-outlined text-sm font-bold">arrow_forward</span>
-                    </button>
-                </form>
-                
-                <div class="text-[11px] md:text-xs font-bold text-[#4b4d52] uppercase tracking-widest mt-12 block lg:hidden text-center md:text-left">
-                    © {{ date('Y') }} LOSE SHOESCARE. KEEP 'EM FRESH.
-                </div>
-            </div>
 
         </div>
     </div>
@@ -95,15 +78,15 @@
             <div class="flex flex-wrap justify-center items-center gap-6 md:gap-10">
                 <div class="flex items-center gap-2">
                     <span class="material-symbols-outlined text-[#0058be] text-[20px] font-medium">verified</span>
-                    <span class="text-xs font-bold text-[#0058be] uppercase tracking-wide">Certified Restoration</span>
+                    <span class="text-xs font-bold text-[#0058be] uppercase tracking-wide">Restorasi Bersertifikat</span>
                 </div>
                 <div class="flex items-center gap-2">
                     <span class="material-symbols-outlined text-[#10b981] text-[20px] font-medium">eco</span>
-                    <span class="text-xs font-bold text-[#10b981] uppercase tracking-wide">Eco-Friendly Process</span>
+                    <span class="text-xs font-bold text-[#10b981] uppercase tracking-wide">Proses Ramah Lingkungan</span>
                 </div>
             </div>
             <span class="text-xs font-bold text-[#4b4d52] uppercase tracking-widest">
-                Designed for the streets.
+                Dirancang untuk jalanan.
             </span>
         </div>
     </div>

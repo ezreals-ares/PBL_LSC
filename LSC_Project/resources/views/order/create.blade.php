@@ -14,7 +14,7 @@
         Pilih <span class="text-primary">Layananmu</span>
     </h1>
     <p class="text-body-lg text-on-surface-variant max-w-2xl">
-        Pilih layanan pembersihan yang tepat untuk koleksi sepatumu. Kami siap menangani dari daily beaters hingga luxury grails.
+        Pilih layanan pembersihan yang tepat untuk koleksi sepatumu.
     </p>
 </header>
 
@@ -213,15 +213,6 @@
                     <div class="flex justify-between items-center">
                         <span class="font-grotesk font-bold uppercase text-on-surface">Total</span>
                         <span class="font-grotesk font-black text-2xl text-on-surface" id="order-total">Rp 0</span>
-                    </div>
-                </div>
-
-                {{-- Promo note --}}
-                <div class="neo-card-yellow p-4 flex items-center gap-3 mb-6">
-                    <span class="material-symbols-outlined text-on-secondary-container text-2xl" style="font-variation-settings:'FILL' 1">local_offer</span>
-                    <div>
-                        <p class="font-bold text-xs uppercase text-on-secondary-container">Info Pembayaran</p>
-                        <p class="text-xs text-on-secondary-container mt-0.5">Upload bukti bayar setelah pesanan dikonfirmasi.</p>
                     </div>
                 </div>
 

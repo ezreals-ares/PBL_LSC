@@ -19,7 +19,7 @@
                     01
                 </div>
                 {{-- Card --}}
-                <div class="w-full flex-1 mt-[-2rem] border-[3px] border-black bg-white flex flex-col items-center text-center p-8 pt-14 relative z-10"
+                <div class="w-full h-full mt-[-2rem] border-[3px] border-black bg-white flex flex-col items-center text-center p-8 pt-14 relative z-10"
                      style="border-radius:16px; box-shadow:6px 6px 0 0 #000;">
                     <span class="material-symbols-outlined mb-5" style="font-size:3rem;color:#0058be;font-variation-settings:'FILL' 0;">cleaning_services</span>
                     <h3 class="font-grotesk font-bold text-xl mb-4" style="color:#191b23;">Pilih Perawatan Anda</h3>
@@ -37,7 +37,7 @@
                     02
                 </div>
                 {{-- Card — Blue featured --}}
-                <div class="w-full flex-1 mt-[-2rem] border-[3px] border-black flex flex-col items-center text-center p-8 pt-14 relative z-10"
+                <div class="w-full h-full mt-[-2rem] border-[3px] border-black flex flex-col items-center text-center p-8 pt-14 relative z-10"
                      style="background-color:#0058be; border-radius:16px; box-shadow:6px 6px 0 0 #000;">
                     <span class="material-symbols-outlined mb-5" style="font-size:3rem;color:#fff;font-variation-settings:'FILL' 0;">location_on</span>
                     <h3 class="font-grotesk font-bold text-xl mb-4" style="color:#fff;">Drop-off atau Antar Jemput</h3>
@@ -55,7 +55,7 @@
                     03
                 </div>
                 {{-- Card --}}
-                <div class="w-full flex-1 mt-[-2rem] border-[3px] border-black bg-white flex flex-col items-center text-center p-8 pt-14 relative z-10"
+                <div class="w-full h-full mt-[-2rem] border-[3px] border-black bg-white flex flex-col items-center text-center p-8 pt-14 relative z-10"
                      style="border-radius:16px; box-shadow:6px 6px 0 0 #000;">
                     <span class="material-symbols-outlined mb-5" style="font-size:3rem;color:#10B981;font-variation-settings:'FILL' 0;">inventory_2</span>
                     <h3 class="font-grotesk font-bold text-xl mb-4" style="color:#191b23;">Sepatu Bersih Siap Dikirim</h3>
@@ -66,14 +66,6 @@
             </div>
 
         </div>
-
-        <!-- {{-- CTA --}}
-        <div class="mt-14 flex justify-center gsap-fade-up">
-            <a href="{{ route('order.create') }}" class="neo-btn-primary py-4 px-10 text-base font-grotesk font-bold uppercase">
-                <span class="material-symbols-outlined text-sm">shopping_cart</span>
-                Pesan Sekarang
-            </a>
-        </div> -->
 
     </div>
 </section>
