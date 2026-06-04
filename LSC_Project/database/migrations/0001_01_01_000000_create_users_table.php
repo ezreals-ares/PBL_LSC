@@ -22,6 +22,8 @@ return new class extends Migration
             $table->string('phone', 20)->nullable();
             $table->string('address')->nullable();  
             $table->enum('role', ['admin', 'customer'])->default('customer');
+            $table->string('google_id')->nullable()->unique();
+            $table->string('avatar')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use App\Models\Payment;
+use App\Models\PaySetting;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -27,7 +28,11 @@ class PaymentController extends Controller
 
         $order->load(['orderDetails.service', 'payment']);
 
-        return view('payment.show', compact('order'));
+        // Ambil pengaturan metode pembayaran yang aktif
+        $qrisSetting = PaySetting::getQris();
+        $bankSetting  = PaySetting::getBank();
+
+        return view('payment.show', compact('order', 'qrisSetting', 'bankSetting'));
     }
 
     /**
@@ -42,8 +47,12 @@ class PaymentController extends Controller
         abort_if($order->payment !== null, 403, 'Pembayaran sudah pernah dikirim.');
 
         $request->validate([
-            'payment_proof' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
+            'payment_method' => 'required|in:qris,bank-transfer',
+            'payment_proof'  => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
         ]);
+
+        // Petakan 'qris' → 'e-wallet' agar sesuai enum yang ada di DB
+        $dbMethod = $request->payment_method === 'qris' ? 'e-wallet' : 'bank-transfer';
 
         $path = $request->file('payment_proof')->store('payment_proofs', 'public');
 
@@ -51,7 +60,7 @@ class PaymentController extends Controller
             'order_id'       => $order->order_id,
             'payment_date'   => Carbon::today()->toDateString(),
             'amount'         => $order->total_price,
-            'payment_method' => 'bank-transfer',
+            'payment_method' => $dbMethod,
             'status'         => 'unverified',
             'payment_proof'  => $path,
         ]);
@@ -75,8 +84,12 @@ class PaymentController extends Controller
         abort_if(!$payment || $payment->status === 'verified', 403);
 
         $request->validate([
-            'payment_proof' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
+            'payment_method' => 'required|in:qris,bank-transfer',
+            'payment_proof'  => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
         ]);
+
+        // Petakan 'qris' → 'e-wallet' agar sesuai enum yang ada di DB
+        $dbMethod = $request->payment_method === 'qris' ? 'e-wallet' : 'bank-transfer';
 
         // Delete old proof file
         if ($payment->payment_proof) {
@@ -86,8 +99,9 @@ class PaymentController extends Controller
         $path = $request->file('payment_proof')->store('payment_proofs', 'public');
 
         $payment->update([
-            'payment_proof' => $path,
-            'payment_date'  => Carbon::today()->toDateString(),
+            'payment_method' => $dbMethod,
+            'payment_proof'  => $path,
+            'payment_date'   => Carbon::today()->toDateString(),
         ]);
 
         return redirect()

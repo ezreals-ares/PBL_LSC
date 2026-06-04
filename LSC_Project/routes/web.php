@@ -22,11 +22,10 @@ Route::get('/', function () {
 })->name('landing');
 
 Route::get('/dashboard', function () {
-    // Admins should use their own Filament panel
     if (auth()->user()->role === 'admin') {
         return redirect('/admin');
     }
-    return view('dashboard');
+    return redirect()->route('order.history');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 // Profile management (Breeze)
@@ -34,14 +33,15 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::post('/profile/avatar', [ProfileController::class, 'uploadAvatar'])->name('profile.avatar');
 });
 
 // ─── Customer Feature Routes ───────────────────────────────────────────────────
 Route::middleware(['auth'])->group(function () {
 
-    // Order routes
-    Route::get('/pesan', [OrderController::class, 'create'])->name('order.create');
-    Route::post('/pesan', [OrderController::class, 'store'])->name('order.store');
+    // Order routes — hanya bisa buat pesanan jika profil (phone+address) sudah lengkap
+    Route::get('/pesan', [OrderController::class, 'create'])->name('order.create')->middleware('profile.complete');
+    Route::post('/pesan', [OrderController::class, 'store'])->name('order.store')->middleware('profile.complete');
     Route::get('/pesanan', [OrderController::class, 'history'])->name('order.history');
     Route::get('/pesanan/{order:order_id}', [OrderController::class, 'show'])->name('order.show');
     Route::delete('/pesanan/{order:order_id}/batal', [OrderController::class, 'cancel'])->name('order.cancel');

@@ -72,7 +72,6 @@
                         <tr class="hover:bg-surface-container-low transition-colors">
                             <td class="p-5 text-sm text-on-surface">
                                 <div>{{ \Carbon\Carbon::parse($order->order_date)->format('d M Y') }}</div>
-                                <div class="text-xs text-on-surface-variant">#{{ $order->order_id }}</div>
                             </td>
                             <td class="p-5">
                                 <div class="flex items-center gap-3">
@@ -105,8 +104,11 @@
                             </td>
                             <td class="p-5">
                                 <div class="flex items-center gap-2 flex-wrap">
+
+                                    {{-- Detail --}}
                                     <a href="{{ route('order.show', $order->order_id) }}"
-                                       class="bg-white border-[2px] border-stroke px-3 py-1.5 text-xs font-bold uppercase text-on-surface hover:bg-secondary-container transition-colors neo-shadow-xs">
+                                       class="neo-btn-white neo-press-sm inline-flex items-center gap-1 px-3 py-1.5 text-xs border-[2px]">
+                                        <span class="material-symbols-outlined" style="font-size:0.9rem;">receipt_long</span>
                                         Detail
                                     </a>
 
@@ -114,13 +116,14 @@
                                     @if($order->status !== 'dibatalkan')
                                         @if(!$order->payment)
                                             <a href="{{ route('payment.show', $order->order_id) }}"
-                                               class="border-[2px] border-stroke px-3 py-1.5 text-xs font-bold uppercase hover:opacity-80 neo-shadow-xs"
-                                               style="background-color:#0058be; color:#fff;">
+                                               class="neo-btn-white neo-press-sm inline-flex items-center gap-1 px-3 py-1.5 text-xs border-[2px]">
+                                                <span class="material-symbols-outlined" style="font-size:0.9rem;">payment</span>
                                                 Bayar
                                             </a>
                                         @elseif($order->payment->status === 'unverified')
                                             <a href="{{ route('payment.show', $order->order_id) }}"
-                                               class="bg-secondary-container text-on-secondary-container border-[2px] border-stroke px-3 py-1.5 text-xs font-bold uppercase hover:opacity-80 neo-shadow-xs">
+                                               class="neo-btn-white neo-press-sm inline-flex items-center gap-1 px-3 py-1.5 text-xs border-[2px]">
+                                                <span class="material-symbols-outlined" style="font-size:0.9rem;">upload_file</span>
                                                 Ganti Bukti
                                             </a>
                                         @endif
@@ -130,12 +133,14 @@
                                     @if($order->status === 'selesai')
                                         @if(!$order->review)
                                             <a href="{{ route('review.create', $order->order_id) }}"
-                                               class="bg-success text-white border-[2px] border-stroke px-3 py-1.5 text-xs font-bold uppercase hover:opacity-80 neo-shadow-xs">
+                                               class="neo-btn-white neo-press-sm inline-flex items-center gap-1 px-3 py-1.5 text-xs border-[2px]">
+                                                <span class="material-symbols-outlined" style="font-size:0.9rem;">rate_review</span>
                                                 Ulasan
                                             </a>
                                         @else
                                             <a href="{{ route('review.edit', $order->order_id) }}"
-                                               class="bg-surface-container text-on-surface border-[2px] border-stroke px-3 py-1.5 text-xs font-bold uppercase hover:bg-secondary-container transition-colors neo-shadow-xs">
+                                               class="neo-btn-white neo-press-sm inline-flex items-center gap-1 px-3 py-1.5 text-xs border-[2px]">
+                                                <span class="material-symbols-outlined" style="font-size:0.9rem;">edit_note</span>
                                                 Edit Ulasan
                                             </a>
                                         @endif
@@ -147,12 +152,13 @@
                                               onsubmit="return confirm('Yakin ingin membatalkan pesanan ini?')">
                                             @csrf @method('DELETE')
                                             <button type="submit"
-                                                class="border-[2px] border-stroke px-3 py-1.5 text-xs font-bold uppercase hover:opacity-80 neo-shadow-xs cursor-pointer"
-                                                style="background-color:#EF4444; color:#fff;">
+                                                class="neo-btn-white neo-press-sm inline-flex items-center gap-1 px-3 py-1.5 text-xs border-[2px] cursor-pointer">
+                                                <span class="material-symbols-outlined" style="font-size:0.9rem;">cancel</span>
                                                 Batal
                                             </button>
                                         </form>
                                     @endif
+
                                 </div>
                             </td>
                         </tr>
@@ -172,7 +178,6 @@
             <div class="neo-card bg-white p-5">
                 <div class="flex justify-between items-start mb-4">
                     <div>
-                        <p class="font-grotesk font-bold text-xs text-on-surface-variant uppercase mb-0.5">#{{ $order->order_id }}</p>
                         <p class="font-grotesk font-bold text-on-surface">{{ $order->orderDetails->first()?->service?->service_name ?? 'Layanan' }}</p>
                         @if($order->jenis_sepatu)
                             <p class="text-xs text-on-surface-variant">{{ $order->jenis_sepatu }}</p>
@@ -186,17 +191,61 @@
                         <p class="font-grotesk font-black text-on-surface">Rp {{ number_format($order->total_price, 0, ',', '.') }}</p>
                     </div>
                     <div class="flex gap-2 flex-wrap justify-end">
+
+                        {{-- Detail --}}
                         <a href="{{ route('order.show', $order->order_id) }}"
-                           class="bg-white border-[2px] border-stroke px-3 py-1.5 text-xs font-bold uppercase hover:bg-secondary-container neo-shadow-xs">Detail</a>
-                        @if($order->status !== 'dibatalkan' && !$order->payment)
-                            <a href="{{ route('payment.show', $order->order_id) }}"
-                               class="border-[2px] border-stroke px-3 py-1.5 text-xs font-bold uppercase neo-shadow-xs"
-                               style="background-color:#0058be; color:#fff;">Bayar</a>
+                           class="neo-btn-white neo-press-sm inline-flex items-center gap-1 px-3 py-1.5 text-xs border-[2px]">
+                            <span class="material-symbols-outlined" style="font-size:0.9rem;">receipt_long</span>
+                            Detail
+                        </a>
+
+                        {{-- Pay --}}
+                        @if($order->status !== 'dibatalkan')
+                            @if(!$order->payment)
+                                <a href="{{ route('payment.show', $order->order_id) }}"
+                                   class="neo-btn-white neo-press-sm inline-flex items-center gap-1 px-3 py-1.5 text-xs border-[2px]">
+                                    <span class="material-symbols-outlined" style="font-size:0.9rem;">payment</span>
+                                    Bayar
+                                </a>
+                            @elseif($order->payment->status === 'unverified')
+                                <a href="{{ route('payment.show', $order->order_id) }}"
+                                   class="neo-btn-white neo-press-sm inline-flex items-center gap-1 px-3 py-1.5 text-xs border-[2px]">
+                                    <span class="material-symbols-outlined" style="font-size:0.9rem;">upload_file</span>
+                                    Ganti Bukti
+                                </a>
+                            @endif
                         @endif
-                        @if($order->status === 'selesai' && !$order->review)
-                            <a href="{{ route('review.create', $order->order_id) }}"
-                               class="bg-success text-white border-[2px] border-stroke px-3 py-1.5 text-xs font-bold uppercase neo-shadow-xs">Ulasan</a>
+
+                        {{-- Review --}}
+                        @if($order->status === 'selesai')
+                            @if(!$order->review)
+                                <a href="{{ route('review.create', $order->order_id) }}"
+                                   class="neo-btn-white neo-press-sm inline-flex items-center gap-1 px-3 py-1.5 text-xs border-[2px]">
+                                    <span class="material-symbols-outlined" style="font-size:0.9rem;">rate_review</span>
+                                    Ulasan
+                                </a>
+                            @else
+                                <a href="{{ route('review.edit', $order->order_id) }}"
+                                   class="neo-btn-white neo-press-sm inline-flex items-center gap-1 px-3 py-1.5 text-xs border-[2px]">
+                                    <span class="material-symbols-outlined" style="font-size:0.9rem;">edit_note</span>
+                                    Edit Ulasan
+                                </a>
+                            @endif
                         @endif
+
+                        {{-- Cancel --}}
+                        @if($order->status === 'pending')
+                            <form method="POST" action="{{ route('order.cancel', $order->order_id) }}"
+                                  onsubmit="return confirm('Yakin ingin membatalkan pesanan ini?')">
+                                @csrf @method('DELETE')
+                                <button type="submit"
+                                    class="neo-btn-white neo-press-sm inline-flex items-center gap-1 px-3 py-1.5 text-xs border-[2px] cursor-pointer">
+                                    <span class="material-symbols-outlined" style="font-size:0.9rem;">cancel</span>
+                                    Batal
+                                </button>
+                            </form>
+                        @endif
+
                     </div>
                 </div>
             </div>

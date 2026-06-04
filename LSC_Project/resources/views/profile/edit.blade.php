@@ -15,18 +15,108 @@
 </header>
 
 @if(session('status') === 'profile-updated')
-    <div class="mb-6 bg-success text-white px-5 py-4 font-bold border-[3px] border-stroke neo-shadow-sm flex items-center gap-3">
-        <span class="material-symbols-outlined">check_circle</span>
+    <div class="mb-6 text-white px-5 py-4 font-bold border-[3px] border-stroke flex items-center gap-3"
+         style="background-color:#16a34a; box-shadow:4px 4px 0px #000;">
+        <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1">check_circle</span>
         Profil berhasil diperbarui.
     </div>
 @endif
 
+@if(session('status') === 'avatar-updated')
+    <div class="mb-6 text-white px-5 py-4 font-bold border-[3px] border-stroke flex items-center gap-3"
+         style="background-color:#16a34a; box-shadow:4px 4px 0px #000;">
+        <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1">check_circle</span>
+        Foto profil berhasil diperbarui.
+    </div>
+@endif
+
 @if(session('status') === 'password-updated')
-    <div class="mb-6 bg-success text-white px-5 py-4 font-bold border-[3px] border-stroke neo-shadow-sm flex items-center gap-3">
-        <span class="material-symbols-outlined">check_circle</span>
+    <div class="mb-6 text-white px-5 py-4 font-bold border-[3px] border-stroke flex items-center gap-3"
+         style="background-color:#16a34a; box-shadow:4px 4px 0px #000;">
+        <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1">check_circle</span>
         Kata sandi berhasil diperbarui.
     </div>
 @endif
+
+{{-- Banner: profil belum lengkap (dari middleware atau session) --}}
+@php
+    $missingPhone   = empty(auth()->user()->phone);
+    $missingAddress = empty(auth()->user()->address);
+    $isIncomplete   = $missingPhone || $missingAddress;
+@endphp
+
+@if(session('incomplete_profile') || $isIncomplete)
+    <div id="incomplete-profile-banner"
+         class="mb-8 border-[3px] border-[#ef4444] p-5 flex gap-4 items-start"
+         style="background-color:#fff0f0; box-shadow: 6px 6px 0px 0px #ef4444;">
+        <span class="material-symbols-outlined text-3xl mt-0.5 shrink-0" style="color:#dc2626;">warning</span>
+        <div class="flex-1">
+            <p class="font-grotesk font-black uppercase text-base mb-1" style="color:#dc2626;">
+                Lengkapi Profil untuk Melakukan Pemesanan
+            </p>
+            <p class="text-sm font-semibold" style="color:#7f1d1d;">
+                Anda belum mengisi
+                @if($missingPhone && $missingAddress)
+                    <strong>Nomor Telepon</strong> dan <strong>Alamat Lengkap</strong>
+                @elseif($missingPhone)
+                    <strong>Nomor Telepon</strong>
+                @else
+                    <strong>Alamat Lengkap</strong>
+                @endif.
+                Silakan lengkapi informasi di bawah ini sebelum melakukan pemesanan.
+            </p>
+        </div>
+    </div>
+@endif
+
+{{-- ── Foto Profil ─────────────────────────────────────────────── --}}
+<div class="neo-card bg-white p-6 md:p-8 mb-8">
+    <h2 class="font-grotesk font-bold text-xl uppercase mb-6 border-b-[3px] border-stroke pb-4 flex items-center gap-2">
+        <span class="material-symbols-outlined">account_circle</span>
+        Foto Profil
+    </h2>
+    <div class="flex items-center gap-6">
+        {{-- Preview Avatar --}}
+        <div class="shrink-0">
+            @if($user->getAvatarUrl())
+                <img src="{{ $user->getAvatarUrl() }}"
+                     alt="Foto profil"
+                     id="avatar-preview"
+                     class="w-24 h-24 rounded-full object-cover border-[3px] border-stroke">
+            @else
+                {{-- Placeholder anonim --}}
+                <div id="avatar-preview-placeholder"
+                     class="w-24 h-24 rounded-full border-[3px] border-stroke overflow-hidden flex items-end justify-center"
+                     style="background-color: #e2e8f0;">
+                    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" class="w-20 h-20" style="color:#94a3b8;">
+                        <circle cx="50" cy="36" r="20" fill="currentColor"/>
+                        <ellipse cx="50" cy="85" rx="34" ry="22" fill="currentColor"/>
+                    </svg>
+                </div>
+            @endif
+        </div>
+
+        <div class="flex-1">
+            <form method="post" action="{{ route('profile.avatar') }}" enctype="multipart/form-data" id="avatar-form">
+                @csrf
+                <label for="avatar-input"
+                       class="neo-btn-primary cursor-pointer inline-flex items-center gap-2 py-3 px-5 font-bold uppercase text-sm">
+                    <span class="material-symbols-outlined text-base">upload</span>
+                    Pilih Foto
+                </label>
+                <input id="avatar-input" name="avatar" type="file"
+                       accept="image/jpg,image/jpeg,image/png,image/webp"
+                       class="hidden"
+                       onchange="previewAndUploadAvatar(this)">
+
+                @error('avatar')
+                    <p class="text-danger font-bold text-sm mt-3">{{ $message }}</p>
+                @enderror
+                <p class="text-xs text-on-surface-variant mt-3">Format: JPG, PNG, WebP &middot; Maks. 2 MB. Foto tersimpan otomatis setelah dipilih.</p>
+            </form>
+        </div>
+    </div>
+</div>
 
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[1.2fr_1fr] gap-8">
     {{-- Update Profile Info --}}
@@ -45,19 +135,39 @@
 
             <div>
                 <label for="email" class="block font-bold text-on-surface mb-2">Email</label>
-                <input type="email" id="email" name="email" class="w-full border-[3px] border-stroke px-4 py-3 bg-surface focus:outline-none focus:ring-0 focus:border-primary transition-colors" value="{{ old('email', $user->email) }}" required>
-                @error('email')<div class="text-error font-bold text-sm mt-2">{{ $message }}</div>@enderror
+                <input type="email" id="email" class="w-full border-[3px] border-stroke px-4 py-3 bg-surface opacity-60 cursor-not-allowed select-none" value="{{ $user->email }}" disabled>
+                <p class="text-xs text-on-surface-variant mt-1">Email tidak dapat diubah.</p>
             </div>
 
             <div>
-                <label for="phone" class="block font-bold text-on-surface mb-2">Nomor Telepon</label>
-                <input type="text" id="phone" name="phone" class="w-full border-[3px] border-stroke px-4 py-3 bg-surface focus:outline-none focus:ring-0 focus:border-primary transition-colors" value="{{ old('phone', $user->phone) }}" placeholder="Contoh: 08123456789">
+                <label for="phone" class="block font-bold text-on-surface mb-2">
+                    Nomor Telepon
+                    @if($missingPhone)
+                        <span class="text-danger font-black">*</span>
+                        <span class="text-xs font-semibold text-danger ml-1">(Wajib diisi)</span>
+                    @endif
+                </label>
+                <input type="text" id="phone" name="phone"
+                    class="w-full border-[3px] px-4 py-3 bg-surface focus:outline-none focus:ring-0 focus:border-primary transition-colors
+                           {{ $missingPhone ? 'border-[#ef4444]' : 'border-stroke' }}"
+                    value="{{ old('phone', $user->phone) }}"
+                    placeholder="Contoh: 08123456789">
                 @error('phone')<div class="text-error font-bold text-sm mt-2">{{ $message }}</div>@enderror
             </div>
 
             <div>
-                <label for="address" class="block font-bold text-on-surface mb-2">Alamat Lengkap</label>
-                <textarea id="address" name="address" class="w-full border-[3px] border-stroke px-4 py-3 bg-surface focus:outline-none focus:ring-0 focus:border-primary transition-colors" rows="3" placeholder="Masukkan alamat lengkap Anda">{{ old('address', $user->address) }}</textarea>
+                <label for="address" class="block font-bold text-on-surface mb-2">
+                    Alamat Lengkap
+                    @if($missingAddress)
+                        <span class="text-danger font-black">*</span>
+                        <span class="text-xs font-semibold text-danger ml-1">(Wajib diisi)</span>
+                    @endif
+                </label>
+                <textarea id="address" name="address"
+                    class="w-full border-[3px] px-4 py-3 bg-surface focus:outline-none focus:ring-0 focus:border-primary transition-colors
+                           {{ $missingAddress ? 'border-[#ef4444]' : 'border-stroke' }}"
+                    rows="3"
+                    placeholder="Masukkan alamat lengkap Anda">{{ old('address', $user->address) }}</textarea>
                 @error('address')<div class="text-error font-bold text-sm mt-2">{{ $message }}</div>@enderror
             </div>
 
@@ -144,3 +254,25 @@
     </div>
 </div>
 @endsection
+
+@section('scripts')
+<script>
+function previewAndUploadAvatar(input) {
+    if (!input.files || !input.files[0]) return;
+    const reader = new FileReader();
+    reader.onload = e => {
+        const prev = document.getElementById('avatar-preview');
+        const placeholder = document.getElementById('avatar-preview-placeholder');
+        if (prev) {
+            prev.src = e.target.result;
+        } else if (placeholder) {
+            placeholder.outerHTML = `<img id="avatar-preview" src="${e.target.result}"
+                class="w-24 h-24 rounded-full object-cover border-[3px] border-stroke">`;
+        }
+    };
+    reader.readAsDataURL(input.files[0]);
+    document.getElementById('avatar-form').submit();
+}
+</script>
+@endsection
+
