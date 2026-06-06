@@ -45,7 +45,7 @@ class StatsOverview extends BaseWidget
                 ),
 
             Stat::make('Pesanan Aktif', $pesananAktif)
-                ->description('Pending & sedang diproses')
+                ->description('Menunggu & sedang diproses')
                 ->descriptionIcon('heroicon-m-arrow-path')
                 ->color('warning'),
 

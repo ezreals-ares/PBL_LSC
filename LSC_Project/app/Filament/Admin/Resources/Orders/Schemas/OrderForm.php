@@ -15,6 +15,7 @@ class OrderForm
     {
         return $schema->components([
             Select::make('user_id')
+                ->label('Pelanggan')
                 ->relationship('user', 'name')
                 ->searchable()
                 ->preload()
@@ -30,16 +31,20 @@ class OrderForm
                 ->placeholder('Contoh: Nike Air Max, Adidas Ultraboost, dll')
                 ->required(),
 
-            DatePicker::make('order_date')->required(),
+            DatePicker::make('order_date')
+                ->label('Tanggal Pesanan')
+                ->required(),
 
             Select::make('pickup_method')
+                ->label('Metode Pengiriman')
                 ->options(['pickup' => 'Pickup', 'antar langsung' => 'Antar Langsung'])
                 ->default('pickup')
                 ->required(),
 
             Select::make('status')
+                ->label('Status')
                 ->options([
-                    'pending' => 'Pending',
+                    'pending' => 'Menunggu',
                     'diproses' => 'Diproses',
                     'selesai' => 'Selesai',
                     'dibatalkan' => 'Dibatalkan',
@@ -47,15 +52,19 @@ class OrderForm
                 ->default('pending')
                 ->required(),
 
-            DatePicker::make('estimated_finish'),
+            DatePicker::make('estimated_finish')
+                ->label('Estimasi Selesai'),
 
             TextInput::make('total_price')
+                ->label('Total Harga')
                 ->required()->numeric()->default(0)->readOnly()->prefix('Rp'),
 
             Repeater::make('order_details')
+                ->label('Detail Pesanan')
                 ->relationship('orderDetails')
                 ->schema([
                     Select::make('service_id')
+                        ->label('Layanan')
                         ->relationship('service', 'service_name')
                         ->searchable()->preload()->required()->live()
                         ->afterStateUpdated(function ($state, $set) {
@@ -65,6 +74,7 @@ class OrderForm
                             }
                         }),
                     TextInput::make('quantity')
+                        ->label('Jumlah')
                         ->numeric()->default(1)->required()->live()
                         ->afterStateUpdated(function ($state, $set, $get) {
                             $service = Service::find($get('service_id'));
@@ -73,6 +83,7 @@ class OrderForm
                             }
                         }),
                     TextInput::make('subtotal')
+                        ->label('Subtotal')
                         ->numeric()->required()->readOnly()->prefix('Rp'),
                 ])
                 ->columns(3)->live()

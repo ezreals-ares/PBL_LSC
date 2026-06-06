@@ -14,6 +14,7 @@ class OperationalHourForm
         return $schema
             ->components([
                 TextInput::make('outlet_id')
+                    ->label('Outlet')
                     ->required()
                     ->numeric(),
 

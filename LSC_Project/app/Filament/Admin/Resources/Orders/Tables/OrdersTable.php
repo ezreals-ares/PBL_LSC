@@ -43,6 +43,14 @@ class OrdersTable
                     ->sortable()
                     ->searchable(),
                 TextColumn::make('status')
+                    ->label('Status')
+                    ->formatStateUsing(fn (string $state): string => match ($state) {
+                        'pending' => 'Menunggu',
+                        'diproses' => 'Diproses',
+                        'selesai' => 'Selesai',
+                        'dibatalkan' => 'Dibatalkan',
+                        default => $state,
+                    })
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
                         'pending' => 'warning',
@@ -97,7 +105,7 @@ class OrdersTable
             ->headerActions([
                 ExportAction::make()
                     ->exporter(OrderExporter::class)
-                    ->label('Export')
+                    ->label('Ekspor')
                     ->formats([
                         ExportFormat::Xlsx,
                         ExportFormat::Csv,
