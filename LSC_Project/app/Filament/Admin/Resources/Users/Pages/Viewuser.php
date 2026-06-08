@@ -25,10 +25,10 @@ class ViewUser extends ViewRecord
     {
         return $schema
             ->components([
-                Section::make('Customer')
+                Section::make('Pelanggan')
                     ->schema([
                         TextEntry::make('name')
-                            ->label('Nama Customer'),
+                            ->label('Nama Pelanggan'),
                         TextEntry::make('email')
                             ->label('Email'),
                         TextEntry::make('phone')
@@ -39,11 +39,11 @@ class ViewUser extends ViewRecord
                     ])
                     ->columns(3),
 
-                Section::make('Ringkasan Order')
+                Section::make('Ringkasan Pesanan')
                     ->schema([
                         TextEntry::make('total_orders')
-                            ->label('Total Order')
-                            ->state(fn ($record): string => $record->orders()->count() . ' order')
+                            ->label('Total Pesanan')
+                            ->state(fn ($record): string => $record->orders()->count() . ' pesanan')
                             ->badge()
                             ->color('info'),
                         TextEntry::make('total_spent')
@@ -54,16 +54,16 @@ class ViewUser extends ViewRecord
                     ])
                     ->columns(2),
 
-                Section::make('Detail Order')
+                Section::make('Detail Pesanan')
                     ->schema([
                         RepeatableEntry::make('orders')
                             ->label('')
                             ->schema([
                                 TextEntry::make('order_id')
-                                    ->label('ID Order')
+                                    ->label('ID Pesanan')
                                     ->badge(),
                                 TextEntry::make('order_date')
-                                    ->label('Tanggal Order')
+                                    ->label('Tanggal Pesanan')
                                     ->date('d M Y'),
                                 TextEntry::make('jenis_sepatu')
                                     ->label('Jenis Sepatu'),
@@ -71,6 +71,13 @@ class ViewUser extends ViewRecord
                                     ->label('Metode'),
                                 TextEntry::make('status')
                                     ->label('Status')
+                                    ->formatStateUsing(fn (string $state): string => match ($state) {
+                                        'pending' => 'Menunggu',
+                                        'diproses' => 'Diproses',
+                                        'selesai' => 'Selesai',
+                                        'dibatalkan' => 'Dibatalkan',
+                                        default => $state,
+                                    })
                                     ->badge()
                                     ->color(fn (string $state): string => match ($state) {
                                         'pending' => 'warning',
@@ -89,7 +96,7 @@ class ViewUser extends ViewRecord
                                         TextEntry::make('service.service_name')
                                             ->label('Layanan'),
                                         TextEntry::make('quantity')
-                                            ->label('Qty')
+                                            ->label('Jumlah')
                                             ->badge(),
                                         TextEntry::make('subtotal')
                                             ->label('Subtotal')

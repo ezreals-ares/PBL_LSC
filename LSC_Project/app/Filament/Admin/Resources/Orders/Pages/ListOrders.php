@@ -25,7 +25,7 @@ class ListOrders extends ListRecords
         return [
             'semua' => Tab::make('Semua'),
 
-            'pending' => Tab::make('Pending')
+            'pending' => Tab::make('Menunggu')
                 ->badge(Order::query()->where('status', 'pending')->count())
                 ->badgeColor('warning')
                 ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 'pending')),

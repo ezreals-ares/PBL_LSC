@@ -26,6 +26,8 @@ class CustomerPanelProvider extends PanelProvider
         return $panel
             ->id('customer')
             ->path('customer')
+            ->resourceCreatePageRedirect('index')
+            ->resourceEditPageRedirect('index')
             ->login()
             ->colors([
                 'primary' => Color::Amber,

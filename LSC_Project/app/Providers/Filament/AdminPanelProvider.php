@@ -32,6 +32,8 @@ class AdminPanelProvider extends PanelProvider
             ->brandName('Lose ShoeCare')
             ->defaultThemeMode(ThemeMode::Light)
             ->path('admin')
+            ->resourceCreatePageRedirect('index')
+            ->resourceEditPageRedirect('index')
             ->viteTheme('resources/css/filament/admin/theme.css')
             ->login()
             ->colors([

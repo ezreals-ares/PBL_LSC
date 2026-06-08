@@ -15,25 +15,31 @@ class UserForm
         return $schema
             ->components([
                 TextInput::make('name')
+                    ->label('Nama')
                     ->required(),
                 TextInput::make('email')
-                    ->label('Email address')
+                    ->label('Alamat Email')
                     ->email(),
-                DateTimePicker::make('email_verified_at'),
+                DateTimePicker::make('email_verified_at')
+                    ->label('Email Terverifikasi Pada'),
                 TextInput::make('password')
+                    ->label('Kata Sandi')
                     ->password()
                     ->required(),
                 TextInput::make('phone')
+                    ->label('Nomor Telepon')
                     ->tel()
                     ->required(),
                 Select::make('role')
+                    ->label('Peran')
                     ->required()
                     ->default('customer')
                     ->options([
-                        'customer' => 'Customer',
+                        'customer' => 'Pelanggan',
                         'admin' => 'Admin',
                     ]),
                 Textarea::make('address')
+                    ->label('Alamat')
                     ->required()
                     ->columnSpanFull(),
             ]);
