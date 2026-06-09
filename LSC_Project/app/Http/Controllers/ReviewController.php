@@ -125,4 +125,25 @@ class ReviewController extends Controller
             ->route('order.show', $order->order_id)
             ->with('success', 'Ulasan berhasil diperbarui.');
     }
+
+    /**
+     * Delete an existing review.
+     */
+    public function destroy(Order $order)
+    {
+        abort_if($order->user_id !== auth()->id(), 403);
+
+        $review = $order->review;
+        abort_if(!$review, 404);
+
+        if ($review->photo) {
+            Storage::disk('public')->delete($review->photo);
+        }
+
+        $review->delete();
+
+        return redirect()
+            ->route('order.show', $order->order_id)
+            ->with('success', 'Ulasan berhasil dihapus.');
+    }
 }
