@@ -24,7 +24,7 @@
 <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
 
     {{-- ── Left: Timeline ──────────────────────────────────────── --}}
-    <section class="lg:col-span-8 spacek-y-6">
+    <section class="lg:col-span-7 space-y-6">
 
         {{-- Progress Timeline --}}
         @php
@@ -93,19 +93,7 @@
                                 </h3>
                                 <p class="text-sm {{ $isActive ? 'text-on-primary-container/80' : 'text-on-surface-variant' }}">{{ $desc }}</p>
 
-                                @if($isActive && $order->status === 'diproses')
-                                    <div class="mt-4">
-                                        <div class="w-full bg-white/20 h-4 border-[2px] border-stroke overflow-hidden">
-                                            <div class="bg-secondary-container h-full w-2/3 border-r-[2px] border-stroke"></div>
-                                        </div>
-                                        <div class="flex justify-between mt-1 text-xs font-bold text-on-primary-container">
-                                            <span>Processing — 65%</span>
-                                            @if($order->estimated_finish)
-                                                <span>Est: {{ \Carbon\Carbon::parse($order->estimated_finish)->format('d M Y') }}</span>
-                                            @endif
-                                        </div>
-                                    </div>
-                                @endif
+
                             </div>
                         </div>
                     </div>
@@ -151,7 +139,7 @@
             <div class="neo-card-yellow p-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
                     <h3 class="font-grotesk font-bold uppercase text-on-secondary-container">
-                        {{ $order->review ? '⭐ Ulasanmu' : '📝 Bagikan Pengalamanmu' }}
+                        {{ $order->review ? 'Ulasanmu' : 'Bagikan Pengalamanmu' }}
                     </h3>
                     @if($order->review)
                         <div class="flex gap-1 mt-1">
@@ -183,7 +171,7 @@
     </section>
 
     {{-- ── Right: Summary Sidebar ──────────────────────────────── --}}
-    <aside class="lg:col-span-4 space-y-4">
+    <aside class="lg:col-span-5 space-y-4">
 
         {{-- Order Summary Card --}}
         <div class="neo-card bg-white p-6">
@@ -195,21 +183,26 @@
                 </div>
                 <div class="flex justify-between text-sm">
                     <span class="text-on-surface-variant">Tanggal Pesan</span>
-                    <span class="font-bold text-on-surface">{{ \Carbon\Carbon::parse($order->order_date)->format('d M Y') }}</span>
+                    <span class="font-bold text-on-surface">{{ \Carbon\Carbon::parse($order->order_date)->locale('id')->translatedFormat('d M Y') }}</span>
                 </div>
                 @if($order->estimated_finish)
                     <div class="flex justify-between text-sm">
                         <span class="text-on-surface-variant">Est. Selesai</span>
-                        <span class="font-bold text-on-surface">{{ \Carbon\Carbon::parse($order->estimated_finish)->format('d M Y') }}</span>
+                        <span class="font-bold text-on-surface">{{ \Carbon\Carbon::parse($order->estimated_finish)->locale('id')->translatedFormat('d M Y') }}</span>
                     </div>
                 @endif
                 <div class="flex justify-between text-sm">
-                    <span class="text-on-surface-variant">Pickup</span>
-                    <span class="font-bold text-on-surface uppercase">{{ $order->pickup_method }}</span>
+                    <span class="text-on-surface-variant">Metode Pengambilan</span>
+                    <span class="font-bold text-on-surface uppercase">
+                        {{ [
+                            'pickup' => 'Jemput ke Lokasi',
+                            'antar langsung' => 'Antar ke Outlet'
+                        ][strtolower($order->pickup_method)] ?? $order->pickup_method }}
+                    </span>
                 </div>
                 @if($order->material_sepatu)
                     <div class="flex justify-between text-sm">
-                        <span class="text-on-surface-variant">Material</span>
+                        <span class="text-on-surface-variant">Material Sepatu</span>
                         <span class="font-bold text-on-surface">{{ $order->material_sepatu }}</span>
                     </div>
                 @endif
@@ -234,7 +227,7 @@
                     </div>
                     <div class="flex justify-between text-sm">
                         <span class="text-on-surface-variant">Tanggal Bayar</span>
-                        <span class="font-bold">{{ \Carbon\Carbon::parse($order->payment->payment_date)->format('d M Y') }}</span>
+                        <span class="font-bold">{{ \Carbon\Carbon::parse($order->payment->payment_date)->locale('id')->translatedFormat('d M Y') }}</span>
                     </div>
                     <div class="flex justify-between text-sm">
                         <span class="text-on-surface-variant">Jumlah</span>
@@ -255,7 +248,7 @@
                         <p class="text-sm text-on-surface-variant mb-4">Belum ada pembayaran.</p>
                         <a href="{{ route('payment.show', $order->order_id) }}" class="neo-btn-primary w-full justify-center text-sm">
                             <span class="material-symbols-outlined text-sm">upload</span>
-                            Unggah Bukti Bayar
+                            Lakukan Pembayaran
                         </a>
                     </div>
                 @else

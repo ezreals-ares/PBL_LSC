@@ -18,7 +18,7 @@ Route::get('/', function () {
         ->take(6)
         ->get();
     $outlets  = Outlet::with('operationalHours')->get();
-    return view('welcome', compact('services', 'reviews', 'outlets'));
+    return view('home.index', compact('services', 'reviews', 'outlets'));
 })->name('landing');
 
 Route::get('/dashboard', function () {
@@ -56,6 +56,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/ulasan/{order:order_id}', [ReviewController::class, 'store'])->name('review.store');
     Route::get('/ulasan/{order:order_id}/edit', [ReviewController::class, 'edit'])->name('review.edit');
     Route::put('/ulasan/{order:order_id}', [ReviewController::class, 'update'])->name('review.update');
+    Route::delete('/ulasan/{order:order_id}', [ReviewController::class, 'destroy'])->name('review.destroy');
 });
 
 require __DIR__.'/auth.php';

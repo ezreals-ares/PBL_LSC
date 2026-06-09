@@ -16,8 +16,9 @@
 {{-- ── Navbar strip ────────────────────────────────────────────── --}}
 <div style="border-bottom: 3px solid #000; background: #FDFCF6; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center;">
     <a href="{{ route('landing') }}" style="text-decoration: none; display: flex; align-items: center; gap: 10px;">
-        <div style="width:36px; height:36px; background:#0058be; border:3px solid #000; display:flex; align-items:center; justify-content:center; font-family:'Space Grotesk',sans-serif; font-weight:900; color:#fff; font-size:14px; box-shadow:2px 2px 0 #000;">L</div>
-        <span style="font-family:'Space Grotesk',sans-serif; font-weight:900; text-transform:uppercase; color:#191b23; letter-spacing:-0.03em; font-size:1.1rem;">Lose ShoesCare</span>
+        {{-- Logo perusahaan --}}
+        <img src="{{ asset('decoration/logo_fix.png') }}" alt="Lose ShoesCare Logo"
+             style="height:38px; width:auto; object-fit:contain;">
     </a>
     <a href="{{ route('register') }}" style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:0.85rem; text-transform:uppercase; color:#191b23; text-decoration:none; border:3px solid #000; padding:6px 16px; background:#FDFCF6; box-shadow:2px 2px 0 #000;">
         Belum punya akun? Daftar →
@@ -31,8 +32,10 @@
         {{-- Left: Brand panel --}}
         <div style="background:#0058be; padding:3rem; display:flex; flex-direction:column; justify-content:space-between; min-height:560px;">
             <div>
-                <div style="background:#fed01b; border:3px solid #000; display:inline-block; padding:4px 14px; font-family:'Space Grotesk',sans-serif; font-weight:900; font-size:0.7rem; text-transform:uppercase; letter-spacing:.1em; color:#6f5900; margin-bottom:2rem;">
-                    Premium Sneaker Care
+                {{-- Logo besar di panel kiri --}}
+                <div style="margin-bottom:2rem;">
+                    <img src="{{ asset('decoration/logo_fix.png') }}" alt="Lose ShoesCare"
+                         style="height:52px; width:auto; object-fit:contain;">
                 </div>
                 <h1 style="font-family:'Space Grotesk',sans-serif; font-weight:900; font-size:2.4rem; text-transform:uppercase; color:#fff; line-height:1; margin-bottom:1.5rem;">
                     LOSE THE<br>DIRT.<br><span style="color:#fed01b;">KEEP THE<br>SOUL.</span>
@@ -43,7 +46,7 @@
             </div>
             {{-- Bottom features --}}
             <div style="display:flex; flex-direction:column; gap:12px; margin-top:2rem;">
-                @foreach(['Deep Cleaning & Whitening', 'Track Pesanan Real-Time', 'Garansi Hasil Bersih'] as $feat)
+                @foreach(['Pembersihan Mendalam & Pemutihan', 'Pantau Pesanan Secara Langsung', 'Garansi Hasil Bersih'] as $feat)
                     <div style="display:flex; align-items:center; gap:10px; color:#fff;">
                         <div style="width:24px; height:24px; background:#fed01b; border:2px solid rgba(255,255,255,0.4); display:flex; align-items:center; justify-content:center; flex-shrink:0;">
                             <span class="material-symbols-outlined" style="font-size:14px; color:#6f5900; font-variation-settings:'FILL' 1">check</span>
@@ -74,38 +77,42 @@
             <form method="POST" action="{{ route('login') }}">
                 @csrf
 
-                {{-- Email --}}
+                {{-- Pol-el (Email) --}}
                 <div style="margin-bottom:1.25rem;">
-                    <label for="email" style="display:block; font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:0.75rem; text-transform:uppercase; letter-spacing:.05em; color:#191b23; margin-bottom:6px;">Email</label>
+                    <label for="email" style="display:block; font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:0.75rem; text-transform:uppercase; letter-spacing:.05em; color:#191b23; margin-bottom:6px;">Pol-el</label>
                     <div style="position:relative;">
                         <span class="material-symbols-outlined" style="position:absolute; left:12px; top:50%; transform:translateY(-50%); color:#6b7280; font-size:18px;">email</span>
                         <input type="email" id="email" name="email" value="{{ old('email') }}" required autofocus
-                               placeholder="nama@email.com"
+                               placeholder="emailsaya@gmail.com"
                                style="width:100%; padding:12px 12px 12px 40px; border:3px solid #000; background:#FDFCF6; font-family:'Plus Jakarta Sans',sans-serif; font-size:1rem; color:#191b23; outline:none; box-sizing:border-box; transition:border-color .15s, box-shadow .15s;"
                                onfocus="this.style.borderColor='#0058be'; this.style.boxShadow='3px 3px 0 #0058be';"
                                onblur="this.style.borderColor='#000'; this.style.boxShadow='none';">
                     </div>
                 </div>
 
-                {{-- Password --}}
+                {{-- Kata Sandi --}}
                 <div style="margin-bottom:1.25rem;">
                     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
                         <label for="password" style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:0.75rem; text-transform:uppercase; letter-spacing:.05em; color:#191b23;">Kata Sandi</label>
                         @if (Route::has('password.request'))
-                            <a href="{{ route('password.request') }}" style="font-size:0.8rem; color:#0058be; font-weight:600; text-decoration:none;">Lupa Sandi?</a>
+                            <a href="{{ route('password.request') }}" style="font-size:0.8rem; color:#0058be; font-weight:600; text-decoration:none;">Lupa Kata Sandi?</a>
                         @endif
                     </div>
                     <div style="position:relative;">
                         <span class="material-symbols-outlined" style="position:absolute; left:12px; top:50%; transform:translateY(-50%); color:#6b7280; font-size:18px;">lock</span>
                         <input type="password" id="password" name="password" required
-                               placeholder="••••••••"
-                               style="width:100%; padding:12px 12px 12px 40px; border:3px solid #000; background:#FDFCF6; font-family:'Plus Jakarta Sans',sans-serif; font-size:1rem; color:#191b23; outline:none; box-sizing:border-box;"
+                               placeholder="Masukkan kata sandi"
+                               style="width:100%; padding:12px 40px 12px 40px; border:3px solid #000; background:#FDFCF6; font-family:'Plus Jakarta Sans',sans-serif; font-size:1rem; color:#191b23; outline:none; box-sizing:border-box; transition:border-color .15s, box-shadow .15s;"
                                onfocus="this.style.borderColor='#0058be'; this.style.boxShadow='3px 3px 0 #0058be';"
                                onblur="this.style.borderColor='#000'; this.style.boxShadow='none';">
+                        <button type="button" onclick="togglePass('password', this)"
+                                style="position:absolute; right:12px; top:50%; transform:translateY(-50%); background:none; border:none; cursor:pointer; padding:0; color:#6b7280; line-height:0;">
+                            <span class="material-symbols-outlined" style="font-size:18px;">visibility</span>
+                        </button>
                     </div>
                 </div>
 
-                {{-- Remember me --}}
+                {{-- Ingat Saya --}}
                 <div style="display:flex; align-items:center; gap:8px; margin-bottom:1.75rem;">
                     <input type="checkbox" id="remember_me" name="remember"
                            style="width:16px; height:16px; accent-color:#0058be; border:2px solid #000; cursor:pointer;">
@@ -138,7 +145,6 @@
                onmouseout="this.style.background='#FDFCF6'; this.style.boxShadow='4px 4px 0 #000';"
                onmousedown="this.style.transform='translate(2px,2px)'; this.style.boxShadow='2px 2px 0 #000';"
                onmouseup="this.style.transform=''; this.style.boxShadow='4px 4px 0 #000';">
-                {{-- Google "G" logo SVG --}}
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 48 48" style="flex-shrink:0;">
                     <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
                     <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
@@ -160,6 +166,20 @@
     }
     .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
 </style>
+
+<script>
+    function togglePass(fieldId, btn) {
+        const input = document.getElementById(fieldId);
+        const icon = btn.querySelector('.material-symbols-outlined');
+        if (input.type === 'password') {
+            input.type = 'text';
+            icon.textContent = 'visibility_off';
+        } else {
+            input.type = 'password';
+            icon.textContent = 'visibility';
+        }
+    }
+</script>
 
 </body>
 </html>

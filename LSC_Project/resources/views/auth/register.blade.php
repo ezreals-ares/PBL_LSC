@@ -16,8 +16,9 @@
 {{-- ── Navbar strip ────────────────────────────────────────────── --}}
 <div style="border-bottom: 3px solid #000; background: #FDFCF6; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center;">
     <a href="{{ route('landing') }}" style="text-decoration: none; display: flex; align-items: center; gap: 10px;">
-        <div style="width:36px; height:36px; background:#0058be; border:3px solid #000; display:flex; align-items:center; justify-content:center; font-family:'Space Grotesk',sans-serif; font-weight:900; color:#fff; font-size:14px; box-shadow:2px 2px 0 #000;">L</div>
-        <span style="font-family:'Space Grotesk',sans-serif; font-weight:900; text-transform:uppercase; color:#191b23; letter-spacing:-0.03em; font-size:1.1rem;">Lose ShoesCare</span>
+        {{-- Logo perusahaan --}}
+        <img src="{{ asset('decoration/logo_fix.png') }}" alt="Lose ShoesCare Logo"
+             style="height:38px; width:auto; object-fit:contain;">
     </a>
     <a href="{{ route('login') }}" style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:0.85rem; text-transform:uppercase; color:#191b23; text-decoration:none; border:3px solid #000; padding:6px 16px; background:#FDFCF6; box-shadow:2px 2px 0 #000;">
         Sudah punya akun? Masuk →
@@ -31,22 +32,24 @@
         {{-- Left: Brand panel (yellow theme for register) --}}
         <div style="background:#fed01b; padding:3rem; display:flex; flex-direction:column; justify-content:space-between; min-height:600px;">
             <div>
-                <div style="background:#0058be; border:3px solid #000; display:inline-block; padding:4px 14px; font-family:'Space Grotesk',sans-serif; font-weight:900; font-size:0.7rem; text-transform:uppercase; letter-spacing:.1em; color:#fff; margin-bottom:2rem;">
-                    Bergabung Sekarang
+                {{-- Logo di panel kiri --}}
+                <div style="margin-bottom:2rem;">
+                    <img src="{{ asset('decoration/logo_fix.png') }}" alt="Lose ShoesCare"
+                         style="height:56px; width:auto; object-fit:contain;">
                 </div>
                 <h1 style="font-family:'Space Grotesk',sans-serif; font-weight:900; font-size:2.4rem; text-transform:uppercase; color:#191b23; line-height:1; margin-bottom:1.5rem;">
-                    FRESH<br>START.<br><span style="color:#0058be;">FRESH<br>KICKS.</span>
+                    MULAI<br>BARU.<br><span style="color:#0058be;">SEPATU<br>BERSIH.</span>
                 </h1>
                 <p style="color:#6f5900; font-size:0.9rem; line-height:1.6; font-weight:500;">
-                    Daftarkan diri dan nikmati kemudahan layanan sneaker laundry profesional kami.
+                    Daftarkan diri dan nikmati kemudahan layanan cuci sepatu profesional kami.
                 </p>
             </div>
             {{-- Steps --}}
             <div style="display:flex; flex-direction:column; gap:16px; margin-top:2rem;">
                 @foreach([
-                    ['1', 'Daftar akun gratis'],
-                    ['2', 'Pilih layanan & pesan'],
-                    ['3', 'Bayar & pantau progres'],
+                    ['1', 'Daftar akun secara gratis'],
+                    ['2', 'Pilih layanan & buat pesanan'],
+                    ['3', 'Bayar & pantau progres secara langsung'],
                 ] as [$num, $step])
                     <div style="display:flex; align-items:center; gap:12px;">
                         <div style="width:32px; height:32px; background:#191b23; border:2px solid #000; display:flex; align-items:center; justify-content:center; font-family:'Space Grotesk',sans-serif; font-weight:900; color:#fed01b; font-size:0.85rem; flex-shrink:0;">
@@ -75,19 +78,20 @@
             <form method="POST" action="{{ route('register') }}">
                 @csrf
 
-                {{-- Input helper style --}}
                 @php
                     $inputStyle = "width:100%; padding:12px 12px 12px 40px; border:3px solid #000; background:#FDFCF6; font-family:'Plus Jakarta Sans',sans-serif; font-size:1rem; color:#191b23; outline:none; box-sizing:border-box;";
+                    $inputWithEyeStyle = "width:100%; padding:12px 40px 12px 40px; border:3px solid #000; background:#FDFCF6; font-family:'Plus Jakarta Sans',sans-serif; font-size:1rem; color:#191b23; outline:none; box-sizing:border-box;";
                     $labelStyle = "display:block; font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:0.75rem; text-transform:uppercase; letter-spacing:.05em; color:#191b23; margin-bottom:6px;";
+                    $focusAttr = "onfocus=\"this.style.borderColor='#0058be'; this.style.boxShadow='3px 3px 0 #0058be';\" onblur=\"this.style.borderColor='#000'; this.style.boxShadow='none';\"";
                 @endphp
 
-                {{-- Name --}}
+                {{-- Nama Lengkap --}}
                 <div style="margin-bottom:1.1rem;">
                     <label for="name" style="{{ $labelStyle }}">Nama Lengkap</label>
                     <div style="position:relative;">
                         <span class="material-symbols-outlined" style="position:absolute; left:12px; top:50%; transform:translateY(-50%); color:#6b7280; font-size:18px;">person</span>
                         <input type="text" id="name" name="name" value="{{ old('name') }}" required autofocus
-                               placeholder="John Smith"
+                               placeholder="Nama sesuai identitas"
                                style="{{ $inputStyle }}"
                                onfocus="this.style.borderColor='#0058be'; this.style.boxShadow='3px 3px 0 #0058be';"
                                onblur="this.style.borderColor='#000'; this.style.boxShadow='none';">
@@ -95,13 +99,13 @@
                     @error('name') <p style="color:#ef4444; font-size:0.8rem; margin-top:4px; font-weight:600;">{{ $message }}</p> @enderror
                 </div>
 
-                {{-- Email --}}
+                {{-- Pol-el (Email) --}}
                 <div style="margin-bottom:1.1rem;">
-                    <label for="email" style="{{ $labelStyle }}">Email</label>
+                    <label for="email" style="{{ $labelStyle }}">Pol-el</label>
                     <div style="position:relative;">
                         <span class="material-symbols-outlined" style="position:absolute; left:12px; top:50%; transform:translateY(-50%); color:#6b7280; font-size:18px;">email</span>
                         <input type="email" id="email" name="email" value="{{ old('email') }}" required
-                               placeholder="nama@email.com"
+                               placeholder="emailsaya@gmail.com"
                                style="{{ $inputStyle }}"
                                onfocus="this.style.borderColor='#0058be'; this.style.boxShadow='3px 3px 0 #0058be';"
                                onblur="this.style.borderColor='#000'; this.style.boxShadow='none';">
@@ -109,30 +113,38 @@
                     @error('email') <p style="color:#ef4444; font-size:0.8rem; margin-top:4px; font-weight:600;">{{ $message }}</p> @enderror
                 </div>
 
-                {{-- Password --}}
+                {{-- Kata Sandi --}}
                 <div style="margin-bottom:1.1rem;">
                     <label for="password" style="{{ $labelStyle }}">Kata Sandi</label>
                     <div style="position:relative;">
                         <span class="material-symbols-outlined" style="position:absolute; left:12px; top:50%; transform:translateY(-50%); color:#6b7280; font-size:18px;">lock</span>
                         <input type="password" id="password" name="password" required
                                placeholder="Min. 8 karakter"
-                               style="{{ $inputStyle }}"
+                               style="{{ $inputWithEyeStyle }}"
                                onfocus="this.style.borderColor='#0058be'; this.style.boxShadow='3px 3px 0 #0058be';"
                                onblur="this.style.borderColor='#000'; this.style.boxShadow='none';">
+                        <button type="button" onclick="togglePass('password', this)"
+                                style="position:absolute; right:12px; top:50%; transform:translateY(-50%); background:none; border:none; cursor:pointer; padding:0; color:#6b7280; line-height:0;">
+                            <span class="material-symbols-outlined" style="font-size:18px;">visibility</span>
+                        </button>
                     </div>
                     @error('password') <p style="color:#ef4444; font-size:0.8rem; margin-top:4px; font-weight:600;">{{ $message }}</p> @enderror
                 </div>
 
-                {{-- Confirm Password --}}
+                {{-- Konfirmasi Kata Sandi --}}
                 <div style="margin-bottom:1.75rem;">
                     <label for="password_confirmation" style="{{ $labelStyle }}">Konfirmasi Kata Sandi</label>
                     <div style="position:relative;">
-                        <span class="material-symbols-outlined" style="position:absolute; left:12px; top:50%; transform:translateY(-50%); color:#6b7280; font-size:18px;">lock_check</span>
+                        <span class="material-symbols-outlined" style="position:absolute; left:12px; top:50%; transform:translateY(-50%); color:#6b7280; font-size:18px;">lock_reset</span>
                         <input type="password" id="password_confirmation" name="password_confirmation" required
                                placeholder="Ulangi kata sandi"
-                               style="{{ $inputStyle }}"
+                               style="{{ $inputWithEyeStyle }}"
                                onfocus="this.style.borderColor='#0058be'; this.style.boxShadow='3px 3px 0 #0058be';"
                                onblur="this.style.borderColor='#000'; this.style.boxShadow='none';">
+                        <button type="button" onclick="togglePass('password_confirmation', this)"
+                                style="position:absolute; right:12px; top:50%; transform:translateY(-50%); background:none; border:none; cursor:pointer; padding:0; color:#6b7280; line-height:0;">
+                            <span class="material-symbols-outlined" style="font-size:18px;">visibility</span>
+                        </button>
                     </div>
                     @error('password_confirmation') <p style="color:#ef4444; font-size:0.8rem; margin-top:4px; font-weight:600;">{{ $message }}</p> @enderror
                 </div>
@@ -158,6 +170,20 @@
     }
     .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
 </style>
+
+<script>
+    function togglePass(fieldId, btn) {
+        const input = document.getElementById(fieldId);
+        const icon = btn.querySelector('.material-symbols-outlined');
+        if (input.type === 'password') {
+            input.type = 'text';
+            icon.textContent = 'visibility_off';
+        } else {
+            input.type = 'password';
+            icon.textContent = 'visibility';
+        }
+    }
+</script>
 
 </body>
 </html>

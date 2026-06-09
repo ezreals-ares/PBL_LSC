@@ -41,11 +41,6 @@
                                 </div>
                         @endif
 
-                                {{-- Badge (featured) --}}
-                                @if($isFeatured)
-                                    <span class="mb-4 self-start bg-white border-[2px] border-stroke px-3 py-0.5 font-grotesk font-black text-xs uppercase text-on-secondary-container -rotate-1">★ Popular</span>
-                                @endif
-
                                 {{-- Title --}}
                                 <h3 class="font-grotesk font-black text-black text-2xl uppercase tracking-tight leading-none mb-4">{{ $service->service_name }}</h3>
 
@@ -79,15 +74,36 @@
             @endforeach
 
             {{-- Custom Needs CTA card --}}
-            @php $isHiddenCTA = $services->count() >= 3; @endphp
+            @php
+                $isHiddenCTA = $services->count() >= 3;
+                $ctaOutlet   = $outlets->first();
+                $ctaWaNum    = null;
+                if ($ctaOutlet && $ctaOutlet->phone) {
+                    $ctaWaNum = preg_replace('/[^0-9]/', '', $ctaOutlet->phone);
+                    if (str_starts_with($ctaWaNum, '0')) $ctaWaNum = '62' . substr($ctaWaNum, 1);
+                }
+            @endphp
             <div class="gsap-stagger-item {{ $isHiddenCTA ? 'hidden hidden-service' : '' }}">
                 <div class="neo-card bg-surface p-8 flex flex-col h-full items-center justify-center text-center">
                     <span class="material-symbols-outlined text-6xl text-primary mb-4">add_circle</span>
                     <h3 class="font-grotesk font-bold text-xl uppercase mb-2">Kebutuhan Lain?</h3>
                     <p class="text-sm text-on-surface-variant mb-6">Kami siap membantu repaint, sole swap, dan perawatan khusus lainnya.</p>
-                    <a href="{{ route('order.create') }}" class="font-grotesk font-bold text-sm uppercase underline decoration-[3px] underline-offset-4 hover:text-primary transition-colors">
-                        PESAN SEKARANG →
-                    </a>
+                    @if($ctaWaNum)
+                        <a href="https://wa.me/{{ $ctaWaNum }}?text=Halo+Lose+ShoesCare%2C+saya+ingin+bertanya+tentang+layanan+khusus..."
+                           target="_blank"
+                           class="flex items-center justify-center gap-2 border-[3px] border-black px-5 py-3 font-grotesk font-bold uppercase text-sm text-black w-full shadow-[4px_4px_0_0_#000] active:translate-y-[2px] active:translate-x-[2px] active:shadow-[2px_2px_0_0_#000] transition-all"
+                           style="background-color: #25D366;">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="black" class="w-5 h-5">
+                                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+                                <path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.126 1.534 5.86L.058 23.486a.5.5 0 0 0 .614.614l5.637-1.476A11.952 11.952 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.831 9.831 0 0 1-5.018-1.374l-.36-.214-3.727.977.997-3.645-.235-.374A9.865 9.865 0 0 1 2.182 12C2.182 6.578 6.578 2.182 12 2.182S21.818 6.578 21.818 12 17.422 21.818 12 21.818z"/>
+                            </svg>
+                            Hubungi Kami
+                        </a>
+                    @else
+                        <a href="{{ route('order.create') }}" class="font-grotesk font-bold text-sm uppercase underline decoration-[3px] underline-offset-4 hover:text-primary transition-colors">
+                            PESAN SEKARANG →
+                        </a>
+                    @endif
                 </div>
             </div>
         </div>
