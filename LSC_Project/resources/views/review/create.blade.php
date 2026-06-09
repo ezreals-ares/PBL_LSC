@@ -23,10 +23,10 @@
     $review      = null;
 @endphp
 
-@include('review._form')
+@include('review.partials._form')
 
 @endsection
 
 @section('scripts')
-@include('review._scripts')
+@include('review.partials._scripts')
 @endsection

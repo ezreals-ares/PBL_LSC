@@ -49,6 +49,13 @@ class PaymentController extends Controller
         $request->validate([
             'payment_method' => 'required|in:qris,bank-transfer',
             'payment_proof'  => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
+        ], [
+            'payment_method.required' => 'Silakan pilih metode pembayaran.',
+            'payment_method.in'       => 'Metode pembayaran tidak valid.',
+            'payment_proof.required'  => 'Bukti pembayaran wajib diunggah.',
+            'payment_proof.file'      => 'Bukti pembayaran harus berupa file.',
+            'payment_proof.mimes'     => 'Format bukti pembayaran harus berupa gambar (jpg, jpeg, png) atau PDF.',
+            'payment_proof.max'       => 'Ukuran bukti pembayaran tidak boleh lebih dari 2MB.',
         ]);
 
         // Petakan 'qris' → 'e-wallet' agar sesuai enum yang ada di DB
@@ -86,6 +93,13 @@ class PaymentController extends Controller
         $request->validate([
             'payment_method' => 'required|in:qris,bank-transfer',
             'payment_proof'  => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
+        ], [
+            'payment_method.required' => 'Silakan pilih metode pembayaran.',
+            'payment_method.in'       => 'Metode pembayaran tidak valid.',
+            'payment_proof.required'  => 'Bukti pembayaran wajib diunggah.',
+            'payment_proof.file'      => 'Bukti pembayaran harus berupa file.',
+            'payment_proof.mimes'     => 'Format bukti pembayaran harus berupa gambar (jpg, jpeg, png) atau PDF.',
+            'payment_proof.max'       => 'Ukuran bukti pembayaran tidak boleh lebih dari 2MB.',
         ]);
 
         // Petakan 'qris' → 'e-wallet' agar sesuai enum yang ada di DB

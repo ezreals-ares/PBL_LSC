@@ -46,7 +46,7 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        // New users are always customers — send them to the landing page
-        return redirect('/');
+        // Redirect new users directly to the profile edit page
+        return redirect()->route('profile.edit');
     }
 }

@@ -156,6 +156,22 @@
                 <span class="material-symbols-outlined">send</span>
                 {{ $submitLabel }}
             </button>
+
+            @if($method === 'PUT')
+                <button type="button" 
+                        onclick="if(confirm('Yakin ingin menghapus ulasan ini?')) document.getElementById('delete-review-form').submit();"
+                        class="neo-btn-danger w-full justify-center py-4 text-base font-grotesk font-black uppercase mt-4">
+                    <span class="material-symbols-outlined">delete</span>
+                    Hapus Ulasan
+                </button>
+            @endif
         </aside>
     </div>
 </form>
+
+@if($method === 'PUT')
+    <form id="delete-review-form" method="POST" action="{{ route('review.destroy', $order->order_id) }}" class="hidden">
+        @csrf
+        @method('DELETE')
+    </form>
+@endif

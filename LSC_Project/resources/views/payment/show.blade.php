@@ -22,9 +22,7 @@
     <h1 class="font-grotesk font-black uppercase tracking-tighter" style="font-size:clamp(1.5rem,4vw,2.5rem)">
         Unggah Bukti Bayar
     </h1>
-    <p class="text-on-surface-variant mt-1">
-        Pesanan #{{ $order->order_id }} — <span class="font-black text-on-surface">Rp {{ number_format($order->total_price,0,',','.') }}</span>
-    </p>
+
 </div>
 
 {{-- Errors --}}
@@ -207,7 +205,7 @@
                 <label for="payment_proof" id="upload-zone"
                        class="border-[3px] border-dashed border-stroke p-10 flex flex-col items-center justify-center bg-surface-container-low cursor-pointer hover:bg-primary-fixed hover:border-primary transition-all group">
                     <span class="material-symbols-outlined text-5xl text-outline mb-3 group-hover:text-primary transition-colors" id="upload-icon">upload_file</span>
-                    <p class="font-grotesk font-bold text-on-surface text-center" id="upload-text">Klik untuk pilih file atau drag & drop</p>
+                    <p class="font-grotesk font-bold text-on-surface text-center" id="upload-text">Klik untuk pilih file atau seret & lepas</p>
                     <p class="text-xs text-on-surface-variant mt-2">JPG, PNG, PDF (maks 2MB)</p>
                     <input type="file" id="payment_proof" name="payment_proof"
                            accept=".jpg,.jpeg,.png,.pdf" class="hidden" onchange="previewFile(this)">
@@ -331,7 +329,7 @@ function previewFile(input) {
 function clearFile() {
     document.getElementById('payment_proof').value = '';
     document.getElementById('file-preview').classList.add('hidden');
-    document.getElementById('upload-text').textContent = 'Klik untuk pilih file atau drag & drop';
+    document.getElementById('upload-text').textContent = 'Klik untuk pilih file atau seret & lepas';
     const icon = document.getElementById('upload-icon');
     icon.style.fontVariationSettings = "'FILL' 0";
     icon.className = 'material-symbols-outlined text-5xl text-outline mb-3 transition-colors';

@@ -50,8 +50,17 @@ class ReviewController extends Controller
 
         $request->validate([
             'rating'  => 'required|integer|between:1,5',
-            'comment' => 'required|string|min:10|max:500',
+            'comment' => 'required|string|min:1|max:500',
             'photo'   => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+        ], [
+            'rating.required'  => 'Silakan pilih rating bintang terlebih dahulu.',
+            'rating.between'   => 'Rating harus antara 1 hingga 5 bintang.',
+            'comment.required' => 'Kolom ulasan tidak boleh kosong.',
+            'comment.min'      => 'Ulasan harus diisi minimal 1 karakter.',
+            'comment.max'      => 'Ulasan tidak boleh lebih dari 500 karakter.',
+            'photo.image'      => 'File yang diunggah harus berupa gambar.',
+            'photo.mimes'      => 'Format foto harus jpg, jpeg, png, atau webp.',
+            'photo.max'        => 'Ukuran foto tidak boleh lebih dari 2MB.',
         ]);
 
         $photoPath = null;
@@ -101,8 +110,17 @@ class ReviewController extends Controller
 
         $request->validate([
             'rating'  => 'required|integer|between:1,5',
-            'comment' => 'required|string|min:10|max:500',
+            'comment' => 'required|string|min:1|max:500',
             'photo'   => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+        ], [
+            'rating.required'  => 'Silakan pilih rating bintang terlebih dahulu.',
+            'rating.between'   => 'Rating harus antara 1 hingga 5 bintang.',
+            'comment.required' => 'Kolom ulasan tidak boleh kosong.',
+            'comment.min'      => 'Ulasan harus diisi minimal 1 karakter.',
+            'comment.max'      => 'Ulasan tidak boleh lebih dari 500 karakter.',
+            'photo.image'      => 'File yang diunggah harus berupa gambar.',
+            'photo.mimes'      => 'Format foto harus jpg, jpeg, png, atau webp.',
+            'photo.max'        => 'Ukuran foto tidak boleh lebih dari 2MB.',
         ]);
 
         $photoPath = $review->photo;
@@ -124,5 +142,26 @@ class ReviewController extends Controller
         return redirect()
             ->route('order.show', $order->order_id)
             ->with('success', 'Ulasan berhasil diperbarui.');
+    }
+
+    /**
+     * Delete an existing review.
+     */
+    public function destroy(Order $order)
+    {
+        abort_if($order->user_id !== auth()->id(), 403);
+
+        $review = $order->review;
+        abort_if(!$review, 404);
+
+        if ($review->photo) {
+            Storage::disk('public')->delete($review->photo);
+        }
+
+        $review->delete();
+
+        return redirect()
+            ->route('order.show', $order->order_id)
+            ->with('success', 'Ulasan berhasil dihapus.');
     }
 }

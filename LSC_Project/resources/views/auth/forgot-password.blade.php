@@ -1,192 +1,119 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
-    @include('partials.welcome._head')
-    <style>
-        /* Auth specific styles */
-        body {
-            background: radial-gradient(circle at top right, var(--secondary) 0%, var(--white) 60%, var(--accent) 100%);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            padding: 2rem;
-            font-family: 'Outfit', sans-serif;
-            position: relative;
-        }
-        .auth-container {
-            background: var(--white);
-            border-radius: 30px;
-            box-shadow: 0 20px 60px rgba(2, 132, 199, 0.1);
-            display: flex;
-            width: 100%;
-            max-width: 480px;
-            min-height: auto;
-            overflow: hidden;
-            border: 1px solid rgba(224, 242, 254, 0.8);
-        }
-        .auth-form-section {
-            flex: 1;
-            padding: 4rem;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-        .auth-logo {
-            font-size: 2.2rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, var(--primary), var(--primary-light));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 2rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .auth-logo i {
-            color: var(--primary);
-            font-size: 2rem;
-        }
-        .auth-desc {
-            color: var(--text-light);
-            font-size: 0.95rem;
-            line-height: 1.6;
-            margin-bottom: 2rem;
-        }
-        .input-group {
-            margin-bottom: 2rem;
-            position: relative;
-        }
-        .input-group label {
-            display: block;
-            color: var(--text-light);
-            font-size: 0.9rem;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-        }
-        .input-group input {
-            width: 100%;
-            border: none;
-            border-bottom: 2px solid var(--accent);
-            padding: 0.5rem 0;
-            font-size: 1.05rem;
-            color: var(--text-dark);
-            outline: none;
-            background: transparent;
-            transition: border-color 0.3s;
-        }
-        .input-group input:focus {
-            border-bottom-color: var(--primary);
-        }
-        .input-group i {
-            position: absolute;
-            right: 0;
-            bottom: 10px;
-            color: var(--primary-light);
-            font-size: 1.2rem;
-        }
-        .btn-login {
-            width: 100%;
-            background: linear-gradient(135deg, var(--primary), var(--primary-light));
-            color: white;
-            border: none;
-            padding: 1rem;
-            border-radius: 9999px;
-            font-size: 1.1rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 0 10px 20px -5px rgba(2, 132, 199, 0.4);
-        }
-        .btn-login:hover {
-            transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 15px 25px -5px rgba(2, 132, 199, 0.5);
-        }
-        .auth-footer {
-            margin-top: 2rem;
-            text-align: center;
-            font-size: 1rem;
-            color: var(--text-light);
-        }
-        .auth-footer a {
-            color: var(--primary);
-            font-weight: 700;
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-        .auth-footer a:hover {
-            color: var(--primary-hover);
-        }
-        
-        /* (Image section removed) */
-        
-        .error-msg {
-            color: #ef4444;
-            font-size: 0.85rem;
-            margin-top: 0.5rem;
-            display: block;
-        }
-
-        @media (max-width: 768px) {
-            .auth-container {
-                border-radius: 20px;
-            }
-            .auth-form-section {
-                padding: 2.5rem;
-            }
-        }
-    </style>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Lupa Kata Sandi — Lose ShoesCare</title>
+    <meta name="description" content="Reset kata sandi akun Lose ShoesCare kamu melalui email.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body>
+<body style="background-color: #FDFCF6; min-height: 100vh; display: flex; flex-direction: column;">
 
-    <!-- Animated Soap Bubbles -->
-    <div class="bubbles">
-        <div class="bubble"></div>
-        <div class="bubble"></div>
-        <div class="bubble"></div>
-        <div class="bubble"></div>
-        <div class="bubble"></div>
-        <div class="bubble"></div>
-        <div class="bubble"></div>
-        <div class="bubble"></div>
-    </div>
-
-<div class="auth-container relative z-10">
-    <div class="auth-form-section">
-        <a href="{{ route('landing') }}" style="text-decoration: none;">
-            <div class="auth-logo">
-                <i class="fas fa-shoe-prints"></i> LSC.
-            </div>
-        </a>
-
-        <div class="auth-desc">
-            Lupa kata sandi Anda? Tidak masalah. Cukup beri tahu kami alamat email Anda dan kami akan mengirimkan tautan reset kata sandi melalui email.
-        </div>
-
-        <!-- Session Status -->
-        <x-auth-session-status class="mb-4" :status="session('status')" style="color: #059669; font-weight: 500; margin-bottom: 1rem;" />
-
-        <form method="POST" action="{{ route('password.email') }}">
-            @csrf
-
-            <div class="input-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email" value="{{ old('email') }}" required autofocus placeholder="johnsmith001@gmail.com">
-                <i class="far fa-envelope"></i>
-                @error('email')
-                    <span class="error-msg">{{ $message }}</span>
-                @enderror
-            </div>
-
-            <button type="submit" class="btn-login">Kirim Link Reset Password</button>
-        </form>
-
-        <div class="auth-footer">
-            Kembali ke <a href="{{ route('login') }}">Masuk</a>
-        </div>
-    </div>
+{{-- ── Navbar strip ────────────────────────────────────────────── --}}
+<div style="border-bottom: 3px solid #000; background: #FDFCF6; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center;">
+    <a href="{{ route('landing') }}" style="text-decoration: none; display: flex; align-items: center; gap: 10px;">
+        <div style="width:36px; height:36px; background:#0058be; border:3px solid #000; display:flex; align-items:center; justify-content:center; font-family:'Space Grotesk',sans-serif; font-weight:900; color:#fff; font-size:14px; box-shadow:2px 2px 0 #000;">L</div>
+        <span style="font-family:'Space Grotesk',sans-serif; font-weight:900; text-transform:uppercase; color:#191b23; letter-spacing:-0.03em; font-size:1.1rem;">Lose ShoesCare</span>
+    </a>
+    <a href="{{ route('login') }}" style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:0.85rem; text-transform:uppercase; color:#191b23; text-decoration:none; border:3px solid #000; padding:6px 16px; background:#FDFCF6; box-shadow:2px 2px 0 #000;">
+        ← Kembali Masuk
+    </a>
 </div>
+
+{{-- ── Main Auth Layout ────────────────────────────────────────── --}}
+<main style="flex:1; display:flex; align-items:center; justify-content:center; padding: 3rem 1rem;">
+    <div style="display:grid; grid-template-columns:1fr 1fr; max-width:960px; width:100%; border:3px solid #000; box-shadow: 8px 8px 0px 0px #000; overflow:hidden; background:#fff;">
+
+        {{-- Left: Brand panel --}}
+        <div style="background:#0058be; padding:3rem; display:flex; flex-direction:column; justify-content:space-between; min-height:480px;">
+            <div>
+                <div style="background:#fed01b; border:3px solid #000; display:inline-block; padding:4px 14px; font-family:'Space Grotesk',sans-serif; font-weight:900; font-size:0.7rem; text-transform:uppercase; letter-spacing:.1em; color:#6f5900; margin-bottom:2rem;">
+                    Pemulihan Akun
+                </div>
+                <h1 style="font-family:'Space Grotesk',sans-serif; font-weight:900; font-size:2.4rem; text-transform:uppercase; color:#fff; line-height:1; margin-bottom:1.5rem;">
+                    LUPA<br>KATA<br><span style="color:#fed01b;">SANDI?</span>
+                </h1>
+                <p style="color:rgba(255,255,255,0.75); font-size:0.9rem; line-height:1.6;">
+                    Masukkan email kamu dan kami akan mengirimkan tautan untuk membuat kata sandi baru.
+                </p>
+            </div>
+            {{-- Bottom steps --}}
+            <div style="display:flex; flex-direction:column; gap:12px; margin-top:2rem;">
+                @foreach(['Masukkan email akunmu', 'Cek kotak masuk emailmu', 'Klik tautan & buat sandi baru'] as $idx => $step)
+                    <div style="display:flex; align-items:center; gap:10px; color:#fff;">
+                        <div style="width:24px; height:24px; background:#fed01b; border:2px solid rgba(255,255,255,0.4); display:flex; align-items:center; justify-content:center; flex-shrink:0; font-family:'Space Grotesk',sans-serif; font-weight:900; font-size:0.75rem; color:#6f5900;">
+                            {{ $idx + 1 }}
+                        </div>
+                        <span style="font-size:0.9rem; font-weight:600;">{{ $step }}</span>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+
+        {{-- Right: Form panel --}}
+        <div style="padding:3rem; background:#fff; display:flex; flex-direction:column; justify-content:center;">
+            <h2 style="font-family:'Space Grotesk',sans-serif; font-weight:900; font-size:1.8rem; text-transform:uppercase; color:#191b23; margin-bottom:0.5rem;">Lupa Kata Sandi</h2>
+            <p style="color:#6b7280; font-size:0.9rem; margin-bottom:2rem;">Kami akan kirimkan link reset ke emailmu.</p>
+
+            {{-- Session Status (success message) --}}
+            @if (session('status'))
+                <div style="background:#d1fae5; border:3px solid #059669; padding:12px 16px; margin-bottom:1.5rem; display:flex; align-items:center; gap:10px;">
+                    <span class="material-symbols-outlined" style="color:#059669; font-size:20px; font-variation-settings:'FILL' 1;">check_circle</span>
+                    <p style="color:#065f46; font-size:0.9rem; font-weight:600; margin:0;">{{ session('status') }}</p>
+                </div>
+            @endif
+
+            {{-- Errors --}}
+            @if($errors->any())
+                <div style="background:#fee2e2; border:3px solid #ef4444; padding:12px 16px; margin-bottom:1.5rem;">
+                    @foreach($errors->all() as $error)
+                        <p style="color:#ef4444; font-size:0.85rem; font-weight:600; margin:0;">{{ $error }}</p>
+                    @endforeach
+                </div>
+            @endif
+
+            <form method="POST" action="{{ route('password.email') }}">
+                @csrf
+
+                {{-- Email --}}
+                <div style="margin-bottom:1.75rem;">
+                    <label for="email" style="display:block; font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:0.75rem; text-transform:uppercase; letter-spacing:.05em; color:#191b23; margin-bottom:6px;">Email</label>
+                    <div style="position:relative;">
+                        <span class="material-symbols-outlined" style="position:absolute; left:12px; top:50%; transform:translateY(-50%); color:#6b7280; font-size:18px;">email</span>
+                        <input type="email" id="email" name="email" value="{{ old('email') }}" required autofocus
+                               placeholder="nama@email.com"
+                               style="width:100%; padding:12px 12px 12px 40px; border:3px solid #000; background:#FDFCF6; font-family:'Plus Jakarta Sans',sans-serif; font-size:1rem; color:#191b23; outline:none; box-sizing:border-box; transition:border-color .15s, box-shadow .15s;"
+                               onfocus="this.style.borderColor='#0058be'; this.style.boxShadow='3px 3px 0 #0058be';"
+                               onblur="this.style.borderColor='#000'; this.style.boxShadow='none';">
+                    </div>
+                </div>
+
+                {{-- Submit --}}
+                <button type="submit"
+                        style="width:100%; background:#0058be; color:#fff; border:3px solid #000; padding:14px; font-family:'Space Grotesk',sans-serif; font-size:1rem; font-weight:900; text-transform:uppercase; letter-spacing:0.05em; cursor:pointer; box-shadow:4px 4px 0 #000; transition:all .1s;"
+                        onmouseover="this.style.background='#2170e4';"
+                        onmouseout="this.style.background='#0058be';"
+                        onmousedown="this.style.transform='translate(2px,2px)'; this.style.boxShadow='2px 2px 0 #000';"
+                        onmouseup="this.style.transform=''; this.style.boxShadow='4px 4px 0 #000';">
+                    KIRIM LINK RESET PASSWORD
+                </button>
+            </form>
+        </div>
+    </div>
+</main>
+
+{{-- Responsive: hide left panel on mobile --}}
+<style>
+    @media (max-width: 700px) {
+        main > div { grid-template-columns: 1fr !important; }
+        main > div > div:first-child { display: none !important; }
+    }
+    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+</style>
 
 </body>
 </html>
