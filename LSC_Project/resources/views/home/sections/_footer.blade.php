@@ -42,7 +42,7 @@
                             if (str_starts_with($footerWaNum, '0')) $footerWaNum = '62' . substr($footerWaNum, 1);
                         }
                     @endphp
-                    <a href="{{ $footerWaNum ? 'https://wa.me/'.$footerWaNum.'?text=Halo+Lose+ShoesCare%2C+saya+ingin+bertanya...' : '#' }}"
+                    <a href="https://wa.me/6285748618712?text=Halo+Lose+ShoesCare%2C+saya+ingin+cuci+sepatu..."
                        target="_blank"
                        title="WhatsApp"
                        class="w-12 h-12 bg-[#25D366] border-[3px] border-black flex items-center justify-center hover:-translate-y-1 hover:-translate-x-1 active:translate-y-0 active:translate-x-0 transition-all shadow-[3px_3px_0_0_#000] hover:shadow-[5px_5px_0_0_#000] active:shadow-none">
@@ -53,7 +53,7 @@
                     </a>
 
                     {{-- Instagram --}}
-                    <a href="https://instagram.com" target="_blank" title="Instagram"
+                    <a href="https://www.instagram.com/lose.shoescare?igsh=YjloaGVsaXFndDg3" target="_blank" title="Instagram"
                        class="w-12 h-12 border-[3px] border-black flex items-center justify-center hover:-translate-y-1 hover:-translate-x-1 active:translate-y-0 active:translate-x-0 transition-all shadow-[3px_3px_0_0_#000] hover:shadow-[5px_5px_0_0_#000] active:shadow-none"
                        style="background-color:#E1306C;">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" class="w-5 h-5">
@@ -62,7 +62,7 @@
                     </a>
 
                     {{-- Facebook --}}
-                    <a href="https://facebook.com" target="_blank" title="Facebook"
+                    <a href="https://www.facebook.com/share/1UofHmq8wY/?mibextid=wwXIfr" target="_blank" title="Facebook"
                        class="w-12 h-12 border-[3px] border-black flex items-center justify-center hover:-translate-y-1 hover:-translate-x-1 active:translate-y-0 active:translate-x-0 transition-all shadow-[3px_3px_0_0_#000] hover:shadow-[5px_5px_0_0_#000] active:shadow-none"
                        style="background-color:#1877F2;">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" class="w-5 h-5">
