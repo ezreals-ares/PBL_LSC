@@ -13,7 +13,7 @@
     <h1 class="font-grotesk font-black uppercase tracking-tighter" style="font-size: clamp(1.5rem, 4vw, 2.5rem);">
         Tulis Ulasan
     </h1>
-    <p class="text-on-surface-variant mt-1">Bagikan pengalamanmu untuk pesanan #{{ $order->order_id }}</p>
+    <!-- <p class="text-on-surface-variant mt-1">Bagikan pengalamanmu untuk pesanan #{{ $order->order_id }}</p> -->
 </div>
 
 @php
