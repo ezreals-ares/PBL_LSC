@@ -46,7 +46,7 @@ class GoogleController extends Controller
 
             return redirect()->intended('/');
         } catch (Exception $e) {
-            return redirect('/login')->withErrors('Unable to login with Google. Please try again.');
+            return redirect('/login')->withErrors('Tidak dapat login menggunakan Google. Silakan coba lagi.');
         }
     }
 }
