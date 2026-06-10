@@ -1,0 +1,70 @@
+<?php
+
+namespace App\Filament\Admin\Resources\Payments;
+
+use App\Filament\Admin\Resources\Payments\Pages\CreatePayment;
+use App\Filament\Admin\Resources\Payments\Pages\EditPayment;
+use App\Filament\Admin\Resources\Payments\Pages\ListPayments;
+use App\Filament\Admin\Resources\Payments\Schemas\PaymentForm;
+use App\Filament\Admin\Resources\Payments\Tables\PaymentsTable;
+use App\Models\Payment;
+use BackedEnum;
+use Filament\Resources\Resource;
+use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
+use Filament\Tables\Table;
+use Filament\Actions\ViewAction;
+use Filament\Infolists\Components\ImageEntry;
+use Filament\Infolists\Components\TextEntry;
+
+class PaymentResource extends Resource
+{
+    protected static ?string $model = Payment::class;
+
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBanknotes;
+
+    protected static ?string $navigationLabel = 'Pembayaran';
+
+    protected static ?string $modelLabel = 'Pembayaran';
+
+    protected static ?string $pluralModelLabel = 'Daftar Pembayaran';
+
+    public static function form(Schema $schema): Schema
+    {
+        return PaymentForm::configure($schema);
+    }
+
+    public static function table(Table $table): Table
+    {
+        return PaymentsTable::configure($table);
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            //
+        ];
+    }
+
+    public static function getPages(): array
+    {
+        return [
+            'index' => ListPayments::route('/'),
+            'create' => CreatePayment::route('/create'),
+            'edit' => EditPayment::route('/{record}/edit'),
+        ];
+    }
+    public static function infolist(Schema $schema): Schema
+    {
+        return $schema
+            ->columns(1)
+            ->components([
+                ImageEntry::make('payment_proof')
+                    ->label('Bukti Pembayaran')
+                    ->disk('public')
+                    ->columnSpanFull()
+                    ->width('100%')
+                    ->height('100%'),
+            ]);
+    }
+}
