@@ -13,9 +13,9 @@ class DatabaseSeeder extends Seeder
             ServiceSeeder::class,
             OutletSeeder::class,
             OperationalHourSeeder::class,
-            OrderSeeder::class,
-            PaymentSeeder::class,
-            ReviewSeeder::class,
+            // OrderSeeder::class,
+            // PaymentSeeder::class,
+            // ReviewSeeder::class,
         ]);
     }
 }
