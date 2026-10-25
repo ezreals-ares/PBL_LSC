@@ -8,9 +8,6 @@ yarn-error.log
 .env.*
 !.env.docker
 .phpunit.result.cache
-docker-compose*.yml
-Dockerfile
-docker/
 storage/framework/cache
 storage/framework/sessions
 storage/framework/views
