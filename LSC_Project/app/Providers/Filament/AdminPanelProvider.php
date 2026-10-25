@@ -34,7 +34,6 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->resourceCreatePageRedirect('index')
             ->resourceEditPageRedirect('index')
-            ->viteTheme('resources/css/filament/admin/theme.css')
             ->login()
             ->colors([
                 'primary' => Color::Sky,
