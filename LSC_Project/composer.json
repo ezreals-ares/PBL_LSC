@@ -18,7 +18,6 @@
         "laravel/breeze": "^2.4",
         "laravel/pail": "^1.2.2",
         "laravel/pint": "^1.24",
-        "laravel/sail": "^1.41",
         "mockery/mockery": "^1.6",
         "nunomaduro/collision": "^8.6",
         "pestphp/pest": "^4.7",
@@ -37,36 +36,6 @@
         }
     },
     "scripts": {
-        "docker:build": [
-            "@putenv DOCKER_BUILDKIT=1",
-            "docker compose build --no-cache"
-        ],
-        "docker:up": [
-            "docker compose up -d"
-        ],
-        "docker:down": [
-            "docker compose down"
-        ],
-        "docker:deploy": [
-            "@composer docker:build",
-            "@composer docker:up",
-            "@php -r \"echo 'App running at: ' . (getenv('APP_URL') ?: 'http://localhost:8080') . PHP_EOL;\""
-        ],
-        "docker:logs": [
-            "docker compose logs -f app"
-        ],
-        "docker:shell": [
-            "docker compose exec app sh"
-        ],
-        "docker:migrate": [
-            "docker compose exec app php artisan migrate --force"
-        ],
-        "docker:seed": [
-            "docker compose exec app php artisan db:seed --force"
-        ],
-        "docker:fresh": [
-            "docker compose exec app php artisan migrate:fresh --seed --force"
-        ],
         "setup": [
             "composer install",
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
