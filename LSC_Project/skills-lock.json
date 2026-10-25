@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "skills": {
+    "docker-agent-deploy": {
+      "source": "docker/skills",
+      "sourceType": "github",
+      "skillPath": "skills/docker-agent-deploy/SKILL.md",
+      "computedHash": "5872dc7aaffbb4928e2e88f9488a338c2f70065fdb77067599f898d24b1db44e"
+    }
+  }
+}
